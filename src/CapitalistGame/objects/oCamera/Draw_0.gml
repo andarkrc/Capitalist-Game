@@ -32,19 +32,6 @@ for(var i = 0; i < array_length(players); i++)
 	else
 	{
 		matrix = matrix_build(oGameHandler.player_current_x, oGameHandler.player_current_y, -16, 0, 0, 0, 16, 16, 16);
-		var next_space = players[oGameHandler.player_turn-1].position + oGameHandler.dice1 + oGameHandler.dice2 - oGameHandler.spaces_left + 1;
-		if(next_space > 40) next_space -= 40;
-		var new_pos = get_player_xy_from_position(next_space, oGameHandler.player_turn-1);
-		new_pos.x += board[next_space].xx1;
-		new_pos.y += board[next_space].yy1; 
-		if(oGameHandler.player_current_x != new_pos.x) oGameHandler.player_current_x += sign(new_pos.x - oGameHandler.player_current_x)*10;
-		if(oGameHandler.player_current_y != new_pos.y) oGameHandler.player_current_y += sign(new_pos.y - oGameHandler.player_current_y)*10;
-		if(abs(oGameHandler.player_current_x-new_pos.x) < 10) oGameHandler.player_current_x = new_pos.x;
-		if(abs(oGameHandler.player_current_y-new_pos.y) < 10) oGameHandler.player_current_y = new_pos.y;
-		if(oGameHandler.player_current_x == new_pos.x && oGameHandler.player_current_y == new_pos.y) oGameHandler.spaces_left--;
-		if(oGameHandler.spaces_left == 0) players[oGameHandler.player_turn-1].position += oGameHandler.dice1 + oGameHandler.dice2;
-		if(players[oGameHandler.player_turn-1].position > 40) players[oGameHandler.player_turn-1].position -= 40;
-		if(oGameHandler.spaces_left == 0) oGameHandler.player_turn_ready = true;
 	}
 	matrix_set(matrix_world, matrix);
 	vertex_submit(global.models[? players[i].piece], pr_trianglelist, sprite_get_texture(asset_get_index($"sPieceTexture{players[i].piece}"), 0));

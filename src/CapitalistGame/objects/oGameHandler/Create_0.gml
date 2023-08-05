@@ -7,14 +7,16 @@ players_ready = 0;
 player_turn = 1;
 player_turn_ready = false;
 dice_rolling = false;
-dice1 = 1;
+dice1 = 0;
 dice2 = 2;
+vdice = 0;
 spaces_left = 0;
 player_current_x = 0;
 player_current_y = 0;
 player_payed_rent = false;
 my_player_id = -1;
 player_has_property = false; 
+player_go_money_collected = false;
 
 events = [];
 

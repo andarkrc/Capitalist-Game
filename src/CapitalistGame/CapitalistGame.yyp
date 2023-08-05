@@ -48,6 +48,7 @@
     {"id":{"name":"sPieceBike","path":"sprites/sPieceBike/sPieceBike.yy",},},
     {"id":{"name":"sPieceDog","path":"sprites/sPieceDog/sPieceDog.yy",},},
     {"id":{"name":"GameplayFunctions","path":"scripts/GameplayFunctions/GameplayFunctions.yy",},},
+    {"id":{"name":"sDice","path":"sprites/sDice/sDice.yy",},},
     {"id":{"name":"sPiecePotato","path":"sprites/sPiecePotato/sPiecePotato.yy",},},
     {"id":{"name":"sHelping","path":"sprites/sHelping/sHelping.yy",},},
     {"id":{"name":"GeneralFunction","path":"scripts/GeneralFunction/GeneralFunction.yy",},},

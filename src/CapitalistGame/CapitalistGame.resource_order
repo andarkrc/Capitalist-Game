@@ -27,6 +27,7 @@
     {"name":"sPieceBike","order":4,"path":"sprites/sPieceBike/sPieceBike.yy",},
     {"name":"sPieceDog","order":1,"path":"sprites/sPieceDog/sPieceDog.yy",},
     {"name":"GameplayFunctions","order":5,"path":"scripts/GameplayFunctions/GameplayFunctions.yy",},
+    {"name":"sDice","order":6,"path":"sprites/sDice/sDice.yy",},
     {"name":"sPiecePotato","order":2,"path":"sprites/sPiecePotato/sPiecePotato.yy",},
     {"name":"sHelping","order":3,"path":"sprites/sHelping/sHelping.yy",},
     {"name":"GlobalVariables","order":2,"path":"scripts/GlobalVariables/GlobalVariables.yy",},

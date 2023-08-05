@@ -41,18 +41,33 @@ else if(game_started)
 	//draw_line(display_get_gui_width()/2, 0, display_get_gui_width()/2, display_get_gui_height());
 	
 	var xx = display_get_gui_width()/2 - 144*array_length(players)/2 + 8;
-	var yy = display_get_gui_height() - 144;
+	var yy = display_get_gui_height() - 160;
 	for(var i = 0; i < array_length(players); i++)
 	{
 		drawSetup(c_ltgray, 0.8);
-		draw_rectangle(xx, yy, (xx+128), (yy+128), false);
+		draw_rectangle(xx, yy, (xx+64), (yy+64), false);
 		drawSetup(players[i].color, 1);
-		draw_text_transformed(xx+64, yy-32, players[i].name, 1, 1, 0);
+		var nw = string_width(players[i].name);
+		var nh = string_height(players[i].name);
+		var mw = string_width($"${players[i].money}");
+		var mh = string_height($"${players[i].money}");
+		drawSetup(c_white, 0.7);
+		draw_rectangle(xx+32 - nw/2, yy-nh-mh-nh/2-2, xx+32 + nw/2, yy-nh-mh+nh/2-2, false);
+		drawSetup(players[i].color, 1);
+		draw_text_transformed(xx+32, yy-nh-mh-1, players[i].name, 1, 1, 0);
+		drawSetup(c_white, 0.7);
+		draw_rectangle(xx+32 - mw/2, yy-mh-mh/2-1, xx+32 + mw/2, yy-mh+mh/2-1, false);
 		drawSetup(c_black);
-		draw_text_transformed(xx+64, yy-8, $"${players[i].money}", 1, 1, 0);
-		draw_sprite_stretched(asset_get_index($"sPiece{players[i].piece}"), 0, xx, yy, 128, 128);
-		xx += 144;
+		draw_text_transformed(xx+32, yy-mh, $"${players[i].money}", 1, 1, 0);
+		draw_sprite_stretched(asset_get_index($"sPiece{players[i].piece}"), 0, xx, yy, 64, 64);
+		if(!dice_rolling && dice1 != 0 && players[player_turn-1].id == players[i].id)
+		{
+			draw_sprite_stretched(sDice, dice1, xx + 32 - 32-4, yy + 80, 32, 32);
+			draw_sprite_stretched(sDice, dice2, xx + 32 + 4, yy + 80, 32, 32);
+		}
+		xx += 80;
 	}
+	
 	if(players[player_turn-1].id == my_player_id)
 	{
 		var mx = display_get_gui_width();

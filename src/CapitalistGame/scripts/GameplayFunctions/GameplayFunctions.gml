@@ -6,7 +6,7 @@ function initiatePlayer(id_){
 		var index = getPlayerIndexFromID(id_);
 		if(index == -1)
 		{
-			players[array_length(players)] = new player(id_, 1500, "", c_white);
+			players[array_length(players)] = new player(id_, , "", c_white);
 		}
 	}
 }
