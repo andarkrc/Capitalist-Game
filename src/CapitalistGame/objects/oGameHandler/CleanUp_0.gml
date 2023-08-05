@@ -1,0 +1,2 @@
+time_source_destroy(ts_game_starting_counter);
+time_source_destroy(ts_dice_rolling);
