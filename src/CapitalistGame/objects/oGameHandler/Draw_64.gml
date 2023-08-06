@@ -68,6 +68,18 @@ else if(game_started)
 		xx += 80;
 	}
 	
+	if(card_displayed)
+	{
+		if(card_type == "chest")
+		{
+			draw_sprite_stretched(sCommunityChestCards, card_index+1, display_get_gui_width()/2 - 256, display_get_gui_height()/3 - 128, 512, 256);
+		}
+		else if(card_type == "chance")
+		{
+			draw_sprite_stretched(sChanceCards, card_index+1, display_get_gui_width()/2 - 256, display_get_gui_height()/3 - 128, 512, 256);
+		}
+	}
+	
 	if(players[player_turn-1].id == my_player_id)
 	{
 		var mx = display_get_gui_width();

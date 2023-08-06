@@ -13,7 +13,7 @@ if(async_load[? "id"] == client)
 				#region Local Variables
 				var new_id, new_name, new_money, new_jail_cards, new_is_in_jail, new_turns_in_jail;
 				var new_position, new_piece, new_ready, red, green, blue;
-				var dice1, dice2, new_turn;
+				var dice1, dice2, new_turn, card;
 				var events = oGameHandler.events;
 				#endregion
 				
@@ -80,6 +80,16 @@ if(async_load[? "id"] == client)
 					#region In-Game Events
 					case "game_event_players_all_ready" :
 					array_push(events, {type : "game_event_players_all_ready"});
+					break;
+					
+					case "game_event_display_card_chest" :
+					card = buffer_read(packet, INTEGER);
+					array_push(events, {type : "game_event_display_card_chest", index : card});
+					break;
+					
+					case "game_event_display_card_chance" :
+					card = buffer_read(packet, INTEGER);
+					array_push(events, {type : "game_event_display_card_chance", index : card});
 					break;
 					
 					case "player_event_dice_rolling" :

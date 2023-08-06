@@ -17,6 +17,14 @@ player_payed_rent = false;
 my_player_id = -1;
 player_has_property = false; 
 player_go_money_collected = false;
+card_displayed = false;
+card_index = -1;
+card_collected = false;
+card_type = "";
+community_chest_cards = ["collect_100", "pay_50", "collect_25", "property_repairs", "go_to_jail", "go_to_go", "collect_200", "pay_150", "collect_50", "collect_10", "pay_100", "jail_card", "collect_20", "collect_50_from_players"];
+chance_cards = ["go_to_go", "pay_15", "go_to_railroad1", "collect_50", "go_to_jail", "pay_50_to_players", "go_to_red3", "go_to_nearest_company", "go_to_nearest_railroad", "jail_card", "go_back_3_spaces", "property_repairs", "collect_100", "go_to_darkblue2", "go_to_pink1"];
+card_effect = false;
+
 
 events = [];
 
@@ -53,6 +61,12 @@ fn = function(){
 }
 
 ts_dice_rolling = time_source_create(time_source_game, 1, time_source_units_seconds, fn);
+
+fn = function(){
+	oGameHandler.card_displayed = false;
+}
+
+ts_card_display = time_source_create(time_source_game, 2, time_source_units_seconds, fn);
 
 ///@function player
 ///@param {Real} id_

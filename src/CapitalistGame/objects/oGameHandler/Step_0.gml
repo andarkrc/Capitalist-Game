@@ -194,9 +194,42 @@ if(spaces_left == 0 && player_turn_ready && game_started)
 			player_payed_rent = true;
 		}
 	}
+	else if(b_type == "chest")
+	{
+		if(!card_collected)
+		{
+			card_collected = true;
+			var card = irandom(array_length(community_chest_cards)-1);
+			//var card = 5;
+			with(oServerHandler)
+			{
+				for(var i = 0; i < array_length(clients); i++)
+				{
+					sendPacket(clients[i], "game_event_display_card_chest", [INTEGER], [card]);
+				}
+			}
+		}
+	}
+	else if(b_type == "chance")
+	{
+		if(!card_collected)
+		{
+			card_collected = true;
+			var card = irandom(array_length(chance_cards)-1);
+			card = array_length(chance_cards)-1; 
+			with(oServerHandler)
+			{
+				for(var i = 0; i < array_length(clients); i++)
+				{
+					sendPacket(clients[i], "game_event_display_card_chance", [INTEGER], [card]);
+				}
+			}
+		}
+	}
 }
 
-if(spaces_left != 0)
+//Player Piece Movement on Board
+if(spaces_left != 0 && !card_displayed)
 {
 	var current_space;
 	if(vdice == 0)
@@ -238,6 +271,186 @@ if(spaces_left != 0)
 		}
 	}
 }
+
+#region Community Chest Actions
+if(card_effect && !card_displayed)
+{
+	card_effect = false;
+	if(card_type == "chest")
+	{
+		switch(community_chest_cards[card_index])
+		{
+			case "property_repairs" :
+			break;
+			
+			case "go_to_jail" :
+			break;
+			
+			case "jail_card" :
+			players[player_turn-1].jail_cards = clamp(players[player_turn-1].jail_cards+1, 0, 2);
+			break;
+			
+			case "go_to_go" :
+			player_turn_ready = false;
+			var dist1 = 1 - players[player_turn-1].position;
+			var dist2 = -1 + players[player_turn-1].position;
+			vdice = min(abs(dist1), abs(dist2)) == abs(dist1) ? dist1 : dist2;
+			spaces_left = vdice;
+			break;
+			
+			case "collect_10" :
+			players[player_turn-1].money += 10;
+			break;
+			
+			case "collect_20" :
+			players[player_turn-1].money += 200;
+			break;
+			
+			case "collect_25" :
+			players[player_turn-1].money += 25;
+			break;
+			
+			case "collect_50" :
+			players[player_turn-1].money += 50;
+			break;
+			
+			case "collect_100" :
+			players[player_turn-1].money += 100;
+			break;
+			
+			case "pay_50" :
+			players[player_turn-1].money -= 50;
+			break;
+			
+			case "pay_100" :
+			players[player_turn-1].money -= 100;
+			break;
+			
+			case "pay_150" :
+			players[player_turn-1].money -= 150;
+			break;
+			
+			case "collect_50_from_players" :
+			for(var i = 0; i < array_length(players); i++)
+			{
+				players[player_turn-1].money += 50;
+				players[i].money -= 50;
+			}
+			break;
+			
+			default :
+			break;
+		}
+	}
+	else if(card_type == "chance")
+	{
+		switch(chance_cards[card_index])
+		{
+			case "property_repairs" :
+			break;
+			
+			case "go_to_jail":
+			break;
+			
+			case "jail_card" :
+			players[player_turn-1].jail_cards = clamp(players[player_turn-1].jail_cards+1, 0, 2);
+			break;
+			
+			case "go_to_go" :
+			player_turn_ready = false;
+			var dist1 = 1 - players[player_turn-1].position;
+			var dist2 = -1 + players[player_turn-1].position;
+			vdice = min(abs(dist1), abs(dist2)) == abs(dist1) ? dist1 : dist2;
+			spaces_left = vdice;
+			break;
+			
+			case "go_to_railroad1" :
+			player_turn_ready = false;
+			var dist1 = 6 - players[player_turn-1].position;
+			var dist2 = -6 + players[player_turn-1].position;
+			vdice = min(abs(dist1), abs(dist2)) == abs(dist1) ? dist1 : dist2;
+			spaces_left = vdice;
+			break;
+			
+			case "go_to_red3" :
+			player_turn_ready = false;
+			var dist1 = 25 - players[player_turn-1].position;
+			var dist2 = -25 + players[player_turn-1].position;
+			vdice = min(abs(dist1), abs(dist2)) == abs(dist1) ? dist1 : dist2;
+			spaces_left = vdice;
+			break;
+			
+			case "go_to_darkblue2" :
+			player_turn_ready = false;
+			var dist1 = 40 - players[player_turn-1].position;
+			var dist2 = -40 + players[player_turn-1].position;
+			vdice = min(abs(dist1), abs(dist2)) == abs(dist1) ? dist1 : dist2;
+			spaces_left = vdice;
+			break;
+			
+			case "go_to_pink1" :
+			player_turn_ready = false;
+			var dist1 = 12 - players[player_turn-1].position;
+			var dist2 = -12 + players[player_turn-1].position;
+			vdice = min(abs(dist1), abs(dist2)) == abs(dist1) ? dist1 : dist2;
+			spaces_left = vdice;
+			break;
+			
+			case "go_to_nearest_company" :
+			player_turn_ready = false;
+			var company = min(abs(29 - players[player_turn-1].position), abs(13 - players[player_turn-1].position)) == abs(29 - players[player_turn-1].position) ? 29 : 13;
+			var dist1 = company - players[player_turn-1].position;
+			var dist2 = -company + players[player_turn-1].position;
+			vdice = min(abs(dist1), abs(dist2)) == abs(dist1) ? dist1 : dist2;
+			spaces_left = vdice;
+			break;
+			
+			case "go_to_nearest_railroad" :
+			player_turn_ready = false;
+			var railroad = min(abs(6 - players[player_turn-1].position), abs(16 - players[player_turn-1].position), abs(26 - players[player_turn-1].position), abs(36 - players[player_turn-1].position));
+			if(railroad == abs(6 - players[player_turn-1].position)) railroad = 6;
+			if(railroad == abs(16 - players[player_turn-1].position)) railroad = 16;
+			if(railroad == abs(26 - players[player_turn-1].position)) railroad = 26;
+			if(railroad == abs(36 - players[player_turn-1].position)) railroad = 36;
+			var dist1 = railroad - players[player_turn-1].position;
+			var dist2 = -railroad + players[player_turn-1].position;
+			vdice = min(abs(dist1), abs(dist2)) == abs(dist1) ? dist1 : dist2;
+			spaces_left = vdice;
+			break;
+			
+			case "go_back_3_spaces" :
+			player_turn_ready = false;
+			vdice = -3;
+			spaces_left = vdice;
+			break;
+			
+			case "collect_50" :
+			players[player_turn-1].money += 50;
+			break;
+			
+			case "collect_100" :
+			players[player_turn-1].money += 100;
+			break;
+			
+			case "pay_15" :
+			players[player_turn-1].money -= 15;
+			break;
+			
+			case "pay_50_to_players" :
+			for(var i = 0; i < array_length(players); i++)
+			{
+				players[player_turn-1].money -= 50;
+				players[i].money += 50;
+			}
+			break;
+			
+			default :
+			break;
+		}
+	}
+}
+#endregion
+
 
 #region Event Handling
 
@@ -282,6 +495,22 @@ if(array_length(events) > 0)
 		time_source_start(ts_game_starting_counter);
 		break;
 		
+		case "game_event_display_card_chest" : 
+		card_displayed = true;
+		card_effect = true;
+		card_type = "chest";
+		card_index = events[0].index;
+		time_source_start(ts_card_display);
+		break;
+		
+		case "game_event_display_card_chance" :
+		card_displayed = true;
+		card_effect = true;
+		card_type = "chance";
+		card_index = events[0].index;
+		time_source_start(ts_card_display);
+		break;
+		
 		case "player_event_dice_rolling" :
 		dice1 = events[0].d1;
 		dice2 = events[0].d2;
@@ -292,6 +521,7 @@ if(array_length(events) > 0)
 		case "player_event_next_turn" :
 		player_turn_ready = false;
 		player_payed_rent = false;
+		card_collected = false;
 		dice1 = 0;
 		player_go_money_collected = false;
 		player_turn = events[0].next_turn;
@@ -314,8 +544,8 @@ if(array_length(events) > 0)
 			{
 				//dice1 = irandom(5) + 1;
 				//dice2 = irandom(5) + 1;
-				dice1 = 2;
-				dice2 = 2;
+				dice1 = 0;
+				dice2 = 7;
 				with(oServerHandler)
 				{
 					for(var i = 0; i < array_length(clients); i++)
@@ -327,7 +557,7 @@ if(array_length(events) > 0)
 			}
 			else
 			{
-				if(player_turn_ready)
+				if(player_turn_ready && !card_effect)
 				{
 					player_turn_ready = false;
 					if(dice1 != dice2)
