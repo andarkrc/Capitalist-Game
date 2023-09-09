@@ -13,7 +13,7 @@ if(async_load[? "id"] == client)
 				#region Local Variables
 				var new_id, new_name, new_money, new_jail_cards, new_is_in_jail, new_turns_in_jail;
 				var new_position, new_piece, new_ready, red, green, blue;
-				var dice1, dice2, new_turn, card;
+				var dice1, dice2, new_turn, card, leave_type, trade_id1, trade_id2;
 				var events = oGameHandler.events;
 				#endregion
 				
@@ -101,6 +101,51 @@ if(async_load[? "id"] == client)
 					case "player_event_next_turn" :
 					new_turn = buffer_read(packet, INTEGER);
 					array_push(events, {type : "player_event_next_turn", next_turn : new_turn});
+					break;
+					
+					case "player_event_upgrade_start" :
+					array_push(events, {type : "player_event_upgrade_start"});
+					break;
+					
+					case "player_event_upgrade_end" :
+					array_push(events, {type : "player_event_upgrade_end"});
+					break;
+					
+					case "player_event_upgrade" :
+					array_push(events, {type : "player_event_upgrade"});
+					break;
+					
+					case "player_event_downgrade" :
+					array_push(events, {type : "player_event_downgrade"});
+					break;
+					
+					case "player_event_next_property" :
+					array_push(events, {type : "player_event_next_property"});
+					break;
+					
+					case "player_event_previous_property" :
+					array_push(events, {type : "player_event_previous_property"});
+					break;
+					
+					case "player_event_auction_start" :
+					array_push(events, {type : "player_event_auction_start"});
+					break;
+					
+					case "player_event_bid_100" :
+					array_push(events, {type : "player_event_bid_100"});
+					break;
+					
+					case "player_event_bid_10" :
+					array_push(events, {type : "player_event_bid_10"});
+					break;
+					
+					case "player_event_bid_withdraw" :
+					array_push(events, {type : "player_event_bid_withdraw"});
+					break;
+					
+					case "player_event_leave_jail" :
+					leave_type = buffer_read(packet, STRING);
+					array_push(events, {type : "player_event_leave_jail", leave : leave_type});
 					break;
 					
 					case "player_event_buy_property" :

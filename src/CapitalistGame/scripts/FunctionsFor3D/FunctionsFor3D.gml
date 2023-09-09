@@ -140,3 +140,5 @@ ds_map_add(global.models, "Dog", loadOBJModelFile("bike.obj"));
 ds_map_add(global.models, "Cat", loadOBJModelFile("bike.obj"));
 ds_map_add(global.models, "Bike", loadOBJModelFile("bike.obj"));
 ds_map_add(global.models, "Dice", loadOBJModelFile("bike.obj"));
+ds_map_add(global.models, "House", loadOBJModelFile("bike.obj"));
+ds_map_add(global.models, "Hotel", loadOBJModelFile("bike.obj"));

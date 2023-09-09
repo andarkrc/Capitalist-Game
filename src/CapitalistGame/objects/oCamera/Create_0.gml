@@ -21,10 +21,6 @@ camera = camera_get_active();
 view_matrix = undefined;
 proj_matrix = undefined;
 
-
-
-
-
 ///@function get_player_xy_from_position
 ///@param {Real} position_
 ///@param {Real} player_
@@ -34,6 +30,7 @@ get_player_xy_from_position = function(position_, player_){
 		y : 0
 	}
 	
+	var players = oGameHandler.players;
 	var offx = 0;
 	var offy = 0;
 	
@@ -41,13 +38,13 @@ get_player_xy_from_position = function(position_, player_){
 	{
 		if(player_ >= 0 && player_ <= 2)
 		{
-			offx = 16 + 64;
-			offy = 64 + player_*64;
+			offx = 64;
+			offy = 16 + 64 + 16 + player_*64;
 		}
 		else
 		{
-			offx = 16  + 64 + 64;
-			offy = 64 + (player_-3)*64;
+			offx = 128 + 64;
+			offy = 16 + 64 + 16 + (player_-3)*64;
 		}
 	}
 	
@@ -55,27 +52,100 @@ get_player_xy_from_position = function(position_, player_){
 	{
 		if(player_ >= 0 && player_ <= 2)
 		{
-			offx = 16;
-			offy = 64 + player_*64;
+			offx = 32;
+			offy = 16 + 64 + 16 + player_*64;
 		}
 		else
 		{
-			offx = 16 + 64;
-			offy = 64 + (player_-3)*64;
+			offx = 64 + 32;
+			offy = 16 + 64 + 16 + (player_-3)*64;
 		}
 	}
 	
 	if(position_ == 11)
 	{
-		if(player_ >= 0 && player_ <= 2)
+		if(player_ == 0)
 		{
-			offx = 16 + 64;
-			offy = 64 + player_*64;
+			if(!players[player_].is_in_jail)
+			{
+				offx = 56;
+				offy = 16 + 16 + player_*56;
+			}
+			else
+			{
+				offx = 136+16;
+				offy = 16+16;
+			}
 		}
-		else
+		
+		if(player_ == 1)
 		{
-			offx = 16  + 64 + 64;
-			offy = 64 + (player_-3)*64;
+			if(!players[player_].is_in_jail)
+			{
+				offx = 56;
+				offy = 16 + 16 + player_*56;
+			}
+			else
+			{
+				offx = 136+16;
+				offy = 56+16;
+			}
+		}
+		
+		if(player_ == 2)
+		{
+			if(!players[player_].is_in_jail)
+			{				
+				offx = 56;
+				offy = 16 + 16 + player_*56;
+			}
+			else
+			{
+				offx = 136+16;
+				offy = 96+16;
+			}
+		}
+		
+		if(player_ == 3)
+		{
+			if(!players[player_].is_in_jail)
+			{
+				offx = 16 + 16 + 16 + 32 + 32 + (player_-3)*56;
+				offy = 200;
+			}
+			else
+			{
+				offx = 184+16;
+				offy = 16+16;
+			}
+		}
+		
+		if(player_ == 4)
+		{
+			if(!players[player_].is_in_jail)
+			{
+				offx = 16 + 16 + 16 + 32 + 32 + (player_-3)*56;
+				offy = 200;
+			}
+			else
+			{
+				offx = 184+16;
+				offy = 56+16;
+			}
+		}
+		
+		if(player_ == 5)
+		{
+			if(!players[player_].is_in_jail)
+			{
+				offx = 16 + 16 + 16 + 32 + 32 + (player_-3)*56;
+				offy = 200;
+			}
+			else
+			{
+				offx = 184+16;
+				offy = 96+16;
+			}
 		}
 	}
 	
@@ -83,13 +153,13 @@ get_player_xy_from_position = function(position_, player_){
 	{
 		if(player_ >= 0 && player_ <= 2)
 		{
-			offx = 16 + (2-player_)*64;
-			offy = 16;
+			offx = 16 + 16 + (2-player_)*64;
+			offy = 32;
 		}
 		else
 		{
-			offx = 16 + (5-player_)*64;
-			offy = 16 + 64;
+			offx = 16 + 16 + (5-player_)*64;
+			offy = 64 + 32;
 		}
 	}
 	
@@ -97,13 +167,13 @@ get_player_xy_from_position = function(position_, player_){
 	{
 		if(player_ >= 0 && player_ <= 2)
 		{
-			offx = 16 + 64 + 64;
-			offy = 16 + (2-player_)*64;
+			offx = 128 + 64;
+			offy = 16 + 16 + (2-player_)*64;
 		}
 		else
 		{
-			offx = 16 + 64;
-			offy = 16 + (5-player_)*64;
+			offx = 64;
+			offy = 16 + 16 + (5-player_)*64;
 		}
 	}
 	
@@ -111,13 +181,13 @@ get_player_xy_from_position = function(position_, player_){
 	{
 		if(player_ >= 0 && player_ <= 2)
 		{
-			offx = 16 + 64;
-			offy = 16 + (2-player_)*64;
+			offx = 64 + 32;
+			offy = 16 + 16 + (2-player_)*64;
 		}
 		else
 		{
-			offx = 16;
-			offy = 16 + (5-player_)*64;
+			offx = 32;
+			offy = 16 + 16 + (5-player_)*64;
 		}
 	}
 	
@@ -125,13 +195,13 @@ get_player_xy_from_position = function(position_, player_){
 	{
 		if(player_ >= 0 && player_ <= 2)
 		{
-			offx = 16 + 64 + (player_)*64;
-			offy = 16 + 64 + 64;
+			offx = 16 + 64 + 16 + (player_)*64;
+			offy = 128 + 64;
 		}
 		else
 		{
-			offx = 16 + 64 + (player_-3)*64;
-			offy = 16 + 64;
+			offx = 16 + 64 + 16 + (player_-3)*64;
+			offy = 64;
 		}
 	}
 	
@@ -139,13 +209,13 @@ get_player_xy_from_position = function(position_, player_){
 	{
 		if(player_ >= 0 && player_ <= 2)
 		{
-			offx = 16 + 64 + (player_)*64;
-			offy = 16 + 64;
+			offx = 16 + 64 + 16 + (player_)*64;
+			offy = 64 + 32;
 		}
 		else
 		{
-			offx = 16 + 64 + (player_-3)*64;
-			offy = 16;
+			offx = 16 + 64 + 16 + (player_-3)*64;
+			offy = 32;
 		}
 	}
 	pos.x = offx;

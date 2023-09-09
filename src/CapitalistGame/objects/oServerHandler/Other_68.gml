@@ -41,6 +41,22 @@ else if(async_load[? "type"] == network_type_data)
 				array_push(events, {type : "player_key_press_enter"});
 				break;
 				
+				case "player_key_press_space" :
+				array_push(events, {type : "player_key_press_space"});
+				break;
+				
+				case "player_key_press_backspace" :
+				array_push(events, {type : "player_key_press_backspace"});
+				break;
+				
+				case "player_key_press_a" : 
+				array_push(events, {type : "player_key_press_a"});
+				break;
+				
+				case "player_key_press_d" :
+				array_push(events, {type : "player_key_press_d"});
+				break;
+				
 				case "player_ready" :
 				array_push(events, {type : "player_ready", id : async_load[? "id"]});
 				break;
