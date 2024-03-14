@@ -1,5 +1,5 @@
 {
-  "FolderOrderSettings": [
+  "FolderOrderSettings":[
     {"name":"Fonts","order":7,"path":"folders/Fonts.yy",},
     {"name":"Notes","order":13,"path":"folders/Notes.yy",},
     {"name":"Objects","order":9,"path":"folders/Objects.yy",},
@@ -14,7 +14,7 @@
     {"name":"3DTextures","order":5,"path":"folders/Sprites/3DTextures.yy",},
     {"name":"PlayerPieces","order":1,"path":"folders/Sprites/PlayerPieces.yy",},
   ],
-  "ResourceOrderSettings": [
+  "ResourceOrderSettings":[
     {"name":"sPieceTextureRat","order":2,"path":"sprites/sPieceTextureRat/sPieceTextureRat.yy",},
     {"name":"sPieceTextureBike","order":1,"path":"sprites/sPieceTextureBike/sPieceTextureBike.yy",},
     {"name":"FunctionsFor3D","order":6,"path":"scripts/FunctionsFor3D/FunctionsFor3D.yy",},
