@@ -5,8 +5,6 @@ y_lookat = y - sin(yaw_rotation)*cos(pitch_rotation);
 z_lookat = z - sin(pitch_rotation);
 */
 
-//Test dev on Linux
-
 view_matrix = matrix_build_lookat(x, y, z, x_lookat, y_lookat, z_lookat, 0, 0, 1);
 proj_matrix = matrix_build_projection_perspective_fov(100, window_get_width()/window_get_height(), 1, 32000);
 
