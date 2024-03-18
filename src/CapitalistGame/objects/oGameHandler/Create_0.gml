@@ -194,3 +194,9 @@ board[37] = new board_space("chance", "chance", "horizontal",,,,, 1408, 1024, 90
 board[38] = new board_space("property", "darkblue 1", "horizontal", 350, true, 200, [35, 70, 175, 500, 1100, 1300, 1500], 1408, 1152, 90, "darkblue");
 board[39] = new board_space("luxury_tax", "luxury tax", "horizontal",,,,, 1408, 1280, 90);
 board[40] = new board_space("property", "darkblue 2", "horizontal", 400, true, 200, [50, 100, 200, 600, 1400, 1700, 2000], 1408, 1408, 90, "darkblue");
+
+
+board[1].width = 256;
+board[11].width = 256;
+board[21].width = 256;
+board[31].width = 256;

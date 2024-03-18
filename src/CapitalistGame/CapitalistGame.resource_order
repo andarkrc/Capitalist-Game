@@ -22,7 +22,6 @@
     {"name":"oServerHandler","order":4,"path":"objects/oServerHandler/oServerHandler.yy",},
     {"name":"oTextBox","order":1,"path":"objects/oTextBox/oTextBox.yy",},
     {"name":"rMainMenu","order":1,"path":"rooms/rMainMenu/rMainMenu.yy",},
-    {"name":"rEmpty","order":2,"path":"rooms/rEmpty/rEmpty.yy",},
     {"name":"ButtonCreation","order":1,"path":"scripts/ButtonCreation/ButtonCreation.yy",},
     {"name":"FunctionsFor3D","order":6,"path":"scripts/FunctionsFor3D/FunctionsFor3D.yy",},
     {"name":"GameplayFunctions","order":5,"path":"scripts/GameplayFunctions/GameplayFunctions.yy",},

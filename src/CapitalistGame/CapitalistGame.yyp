@@ -45,7 +45,6 @@
     {"id":{"name":"oServerHandler","path":"objects/oServerHandler/oServerHandler.yy",},},
     {"id":{"name":"oTextBox","path":"objects/oTextBox/oTextBox.yy",},},
     {"id":{"name":"rMainMenu","path":"rooms/rMainMenu/rMainMenu.yy",},},
-    {"id":{"name":"rEmpty","path":"rooms/rEmpty/rEmpty.yy",},},
     {"id":{"name":"rTest","path":"rooms/rTest/rTest.yy",},},
     {"id":{"name":"ButtonCreation","path":"scripts/ButtonCreation/ButtonCreation.yy",},},
     {"id":{"name":"FunctionsFor3D","path":"scripts/FunctionsFor3D/FunctionsFor3D.yy",},},
@@ -81,7 +80,6 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"rMainMenu","path":"rooms/rMainMenu/rMainMenu.yy",},},
-    {"roomId":{"name":"rEmpty","path":"rooms/rEmpty/rEmpty.yy",},},
     {"roomId":{"name":"rTest","path":"rooms/rTest/rTest.yy",},},
   ],
   "templateType":null,
