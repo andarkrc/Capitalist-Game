@@ -1,4 +1,4 @@
-randomize();
+//randomize();
 
 global.connection_type = "server";
 global.server_ip = "localhost";

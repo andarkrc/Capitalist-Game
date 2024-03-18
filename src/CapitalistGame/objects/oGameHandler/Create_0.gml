@@ -8,10 +8,16 @@ game_starting_counter = 0;
 players_ready = 0;
 player_turn = 0;
 
-rolling_dice = false;
+rolling_dice = true;
 dice1_value = 0;
 dice2_value = 0;
 positions_remaining = 0;
+
+dice_rotation = {
+	x : 0,
+	y : 0,
+	z : 0
+};
 
 
 if (global.connection_type == "server")
