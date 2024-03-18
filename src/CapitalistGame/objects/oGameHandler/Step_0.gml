@@ -25,7 +25,7 @@ if (keyboard_check_pressed(vk_control))
 {
 	input = "input_extra";
 }
-sendPacket(oClientHandler.client, input, [INTEGER], [oClientHandler.client_id]);
+sendPacket(client.client, input, [INTEGER], [client.client_id]);
 #endregion
 #region Game Starting
 if (game_state == "lobby")
@@ -33,7 +33,7 @@ if (game_state == "lobby")
 	if (get_players_ready() == array_length(players) && array_length(players) >= 1)
 	{
 		game_starting = true;
-		with (oServerHandler)
+		with (server)
 		{
 			sendPacketAll(clients, "game_starting");
 		}
@@ -117,9 +117,9 @@ if (array_length(events) != 0)
 		{
 			if (game_state == "lobby")
 			{
-				if (event.id == oClientHandler.client_id)
+				if (event.id == client.client_id)
 				{
-					sendPacket(oClientHandler.client, "player_piece_request");
+					sendPacket(client.client, "player_piece_request", [INTEGER], [client.client_id]);
 				}
 			}
 		}
@@ -129,9 +129,9 @@ if (array_length(events) != 0)
 		{
 			if (game_state == "lobby")
 			{
-				if (event.id == oClientHandler.client_id)
+				if (event.id == client.client_id)
 				{
-					sendPacket(oClientHandler.client, "player_color_request");
+					sendPacket(client.client, "player_color_request", [INTEGER], [client.client_id]);
 				}
 			}
 		}

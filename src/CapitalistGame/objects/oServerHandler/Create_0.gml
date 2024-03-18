@@ -8,3 +8,5 @@ while(server < 0)
 }
 
 clients = [];
+
+host = undefined;

@@ -16,17 +16,8 @@ var board = oGameHandler.board;
 for (var i = 1; i < 41; i++)
 {
 	if (board[i].shape == "square") continue;
-	//Love doing math on an inverted y axis :)
-	var width = 128;//width & height are actually coords ;-;(most right x coord and down most y coord on normal xOy plane)
-	var height = -256;//(0, 0) is top left of the board space
-	var midx = width / 2;
-	var midy = height / 2;
-	var angle = board[i].rotation * pi / 180;
-	var offx = midx * cos(angle) - midy * sin(angle);
-	var offy = midx * sin(angle) + midy * cos(angle);
-	var xx = board[i].x
-	var yy = board[i].y;
-	var matrix = matrix_build(xx + offx, yy - offy, -32, 0, 0, 0, 32, 32, 32);
+	var offset = board[i].get_rotated_offset(board[i].width / 2, board[i].height / 2);
+	var matrix = matrix_build(board[i].x + offset.x, board[i].y + offset.y, -32, 0, 0, 0, 32, 32, 32);
 	matrix_set(matrix_world, matrix);
 	vertex_submit(global.models[? "Hotel"], pr_trianglelist, sprite_get_texture(sHotelTexture, 0));
 }

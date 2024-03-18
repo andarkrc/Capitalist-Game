@@ -1,3 +1,5 @@
+drawSetup(c_black, 1, fnMedium, fa_center, fa_middle);
+draw_text_transformed(128, 64, $"Client: {global.player_name} {client.client_id}", 1, 1, 0);
 switch(get_game_state())
 {
 	case "lobby_starting":

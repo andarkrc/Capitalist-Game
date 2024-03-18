@@ -1,3 +1,6 @@
+server = undefined;
+client = undefined;
+
 game_started = false;
 game_starting = false;
 game_starting_time = 1;
@@ -5,12 +8,17 @@ game_starting_counter = 0;
 players_ready = 0;
 player_turn = 0;
 
+rolling_dice = false;
+dice1_value = 0;
+dice2_value = 0;
+positions_remaining = 0;
+
 
 if (global.connection_type == "server")
 {
-	instance_create_layer(0, 0, "Instances", oServerHandler);
+	server = instance_create_layer(0, 0, "Instances", oServerHandler);
 }
-instance_create_layer(0, 0, "Instances", oClientHandler);
+client = instance_create_layer(0, 0, "Instances", oClientHandler);
 
 
 events = [];
@@ -43,6 +51,8 @@ game_starting_ts = time_source_create(time_source_game, 1, time_source_units_sec
 get_game_state = function(){
 	if (game_starting == true) return "lobby_starting";
 	if (game_started == false) return "lobby";
+	if (rolling_dice == true) return "game_rolling_dice";
+	if (positions_remaining != 0) return "game_piece_moving";
 	return "game";
 }
 
@@ -50,28 +60,9 @@ get_game_state = function(){
 ///@param {String} type_
 game_state_is = function(type_){
 	var game_state = get_game_state();
-	if (type_ == "game")
+	if (string_starts_with(game_state, type_))
 	{
-		switch(game_state)
-		{
-			case "game" :
-			return true;
-			
-			default :
-			return false;
-		}
-	}
-	if (type_ == "lobby")
-	{
-		switch(game_state)
-		{
-			case "lobby":
-			case "lobby_starting":
-			return true;
-			
-			default:
-			return false;
-		}
+		return true;
 	}
 	return false;
 }
@@ -138,9 +129,21 @@ board_space = function(type_, name_, shape_, price_ = 0, upgradeable_ = false, u
 	self.shape = shape_;
 	self.x = x_;
 	self.y = y_;
+	self.width = 128;
+	self.height = 256;
 	self.rotation = rotation_;
 	self.set = set_;
 	self.mortgaged = false;
+	
+	///@function get_rotated_offset
+	static get_rotated_offset = function(xx_, yy_) {
+		//Love doing math on an inverted y axis :)
+		yy_ = -yy_;
+		var angle = self.rotation * pi / 180;
+		var offx = xx_ * cos(angle) - yy_ * sin(angle);
+		var offy = xx_ * sin(angle) + yy_ * cos(angle);
+		return {x : offx, y : -offy};
+	};
 }
 
 

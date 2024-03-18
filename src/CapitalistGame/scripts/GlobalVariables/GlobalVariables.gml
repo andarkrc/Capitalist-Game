@@ -1,8 +1,3 @@
-#macro STRING buffer_string
-#macro INTEGER buffer_s32
-#macro FLOAT buffer_f64
-#macro BOOL buffer_bool
-
 randomize();
 
 global.connection_type = "server";
