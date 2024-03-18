@@ -80,8 +80,8 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
-    {"roomId":{"name":"rEmpty","path":"rooms/rEmpty/rEmpty.yy",},},
     {"roomId":{"name":"rMainMenu","path":"rooms/rMainMenu/rMainMenu.yy",},},
+    {"roomId":{"name":"rEmpty","path":"rooms/rEmpty/rEmpty.yy",},},
     {"roomId":{"name":"rTest","path":"rooms/rTest/rTest.yy",},},
   ],
   "templateType":null,
