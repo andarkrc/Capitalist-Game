@@ -1,3 +1,41 @@
+#region Debugging
+
+if (keyboard_check_pressed(vk_tab))
+{
+	if (!game_starting)
+	{
+		game_starting = true;
+		with (server)
+		{
+			sendPacketAll(clients, "game_starting");
+		}
+	}
+}
+
+if(game_started)
+{
+	var dir = 0;
+	if (keyboard_check_pressed(vk_left))
+	{
+		dir = 1;
+	}
+	if (keyboard_check_pressed(vk_right))
+	{
+		dir = -1;
+	}
+	for (var i = 0; i < array_length(players); i++)
+	{
+		players[i].position += dir;
+		if (players[i].position > 40) players[i].position -= 40;
+		if (players[i].position < 1)   players[i].position += 40;
+		players[i].target = players[i].position;
+		
+	}
+}
+
+#endregion
+
+
 var game_state = get_game_state();
 #region Input Handling
 var input = "";

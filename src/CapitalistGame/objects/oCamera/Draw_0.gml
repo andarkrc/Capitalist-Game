@@ -12,6 +12,7 @@ camera_set_view_mat(camera, view_matrix);
 camera_set_proj_mat(camera, proj_matrix);
 camera_apply(camera);
 
+/*
 var board = oGameHandler.board;
 for (var i = 1; i < 41; i++)
 {
@@ -21,5 +22,5 @@ for (var i = 1; i < 41; i++)
 	matrix_set(matrix_world, matrix);
 	vertex_submit(global.models[? "Hotel"], pr_trianglelist, sprite_get_texture(sHotelTexture, 0));
 }
-
+*/
 matrix_set(matrix_world, matrix_build_identity());

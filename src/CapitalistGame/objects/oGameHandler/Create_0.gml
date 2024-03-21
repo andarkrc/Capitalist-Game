@@ -8,7 +8,7 @@ game_starting_counter = 0;
 players_ready = 0;
 player_turn = 0;
 
-rolling_dice = true;
+rolling_dice = false;
 dice1_value = 0;
 dice2_value = 0;
 positions_remaining = 0;
@@ -102,6 +102,9 @@ player = function(id_, money_ = 15000, name_ = "", piece_ = "", color_ = c_white
 	self.is_in_jail = false;
 	self.turns_in_jail = 0;
 	self.position = 1;
+	self.target = 1;
+	self.x = 0;
+	self.y = 0;
 	self.piece = piece_;
 	self.color = color_;
 	self.ready = false;

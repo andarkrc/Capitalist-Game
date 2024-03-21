@@ -10,4 +10,10 @@ while(server < 0)
 
 clients = [];
 
+repeat (5)
+{
+	instance_create_layer(0, 0, "Instances", oClientHandler);
+}
+
+
 host = undefined;
