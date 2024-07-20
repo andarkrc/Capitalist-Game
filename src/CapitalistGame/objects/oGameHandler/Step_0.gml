@@ -373,7 +373,7 @@ if (ds_map_exists(client.listeners, "host"))
 {
 	if (get_game_state() == "lobby")
 	{
-		if (array_length(players) > 0 && array_length(players) == get_players_ready())
+		if (array_length(players) > 1 && array_length(players) == get_players_ready())
 		{
 			game_starting = true;
 			packet_send(client.client, packet_create("hst_info_game_starting", [], [], 2));
@@ -1403,7 +1403,7 @@ if (array_length(events) > 0)
 			auction_members[i] = players[i].id;
 		}
 		auction_value = floor(board[players[player_turn].position].price / 2);
-		auction_turn = 0;
+		auction_turn = player_turn;
 		break;
 		
 		case "hst_info_new_bid":
@@ -1432,7 +1432,32 @@ if (array_length(events) > 0)
 		if (players[player_turn].is_in_jail || dice1_value != dice2_value)
 		{
 			consecutive_doubles = 0;
-			player_turn = player_turn_next;
+			if (players[player_turn].money >= 0)
+			{
+				player_turn = player_turn_next;
+			}
+			else
+			{
+				for (var i = 1; i <= 40; i++)
+				{
+					if (board[i].owner == players[player_turn].id)
+					{
+						board[i].mortgaged = true;
+						board[i].upgrade_state = 0;
+						board[i].owner = undefined;
+					}
+				}
+				update_board_sets();
+				array_insert(game_end_list, 0, players[player_turn]);
+				array_delete(players, player_turn, 1);
+				player_turn = player_turn % array_length(players);
+				if (array_length(players) == 1)
+				{
+					game_ending = true;
+					time_source_start(ts_game_ending);
+					break;
+				}
+			}
 		}
 			
 		player_turn_next = (player_turn + 1) % array_length(players);

@@ -1,5 +1,5 @@
 var game_state = get_game_state();
-if (game_state_is("game"))
+if (game_state_is("game") && !(get_game_state() == "game_ended"))
 {
 	draw_setup();
 	draw_sprite(sBoard, 0, 0, 0);

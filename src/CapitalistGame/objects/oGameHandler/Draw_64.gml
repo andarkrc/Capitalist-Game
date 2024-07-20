@@ -1,14 +1,22 @@
-if (game_state_is("game"))
+if (game_state_is("game") && !(get_game_state() == "game_ended"))
 {
 	draw_clear_alpha(c_white, 1);
 	draw_surface(application_surface, 0, -192);
 }
 
-draw_setup(c_black, 1, fnLeelawadee16, fa_left, fa_middle);
-draw_text_transformed(32, 32, $"Client: {global.player_name} {client.server_id}", 1, 1, 0);
-draw_text_transformed(32, 64, $"Game State: {get_game_state()}", 1, 1, 0);
-draw_text_transformed(32, 96, $"Pos remaining: {positions_remaining}", 1, 1, 0);
-draw_text_transformed(32, 128, $"Selected: {selected_property}", 1, 1, 0);
+if (get_game_state() == "game_ended")
+{
+	draw_setup(c_black, 1, fnLeelawadee16, fa_left, fa_middle);
+	draw_text(64, 64, "Winners are:");
+	for (var i = 0; i < array_length(game_end_list); i++)
+	{
+		draw_setup(game_end_list[i].color, 1, fnLeelawadee16, fa_left, fa_middle);
+		draw_text(64, 96 + 32 * i, game_end_list[i].name);
+	}
+	draw_setup(c_black, 1, fnLeelawadee16, fa_right, fa_middle);
+	draw_text(display_get_gui_width() / 2, 64, $"Returning to lobby in {game_returning_to_lobby_counter}");
+}
+
 switch(get_game_state())
 {
 	case "lobby_starting":
@@ -116,7 +124,7 @@ if (get_game_state() == "game_auction")
 	}
 }
 
-if (game_state_is("game"))
+if (game_state_is("game") && !(get_game_state() == "game_ended"))
 {
 	var midx = display_get_gui_width() / 2;
 	var midy = display_get_gui_height() / 2;

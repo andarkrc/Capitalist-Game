@@ -1,9 +1,16 @@
+randomize();
 server = undefined;
 client = undefined;
 
 game_started = false;
 game_starting = false;
 game_starting_time = 1;
+game_ended = false;
+game_ending = false;
+game_ending_time = 2;
+game_returning_to_lobby_counter = 5;
+game_returning_to_lobby_time = 5;
+game_end_list = [];
 game_starting_counter = 0;
 players_ready = 0;
 player_turn = 0;
@@ -73,6 +80,41 @@ player_pieces = ["Bike", "Cat", "Dog", "Duck", "Potato", "Rat"];
 #region Time Sources
 var fn = function()
 {
+	if (game_returning_to_lobby_counter > 0)
+	{
+		game_returning_to_lobby_counter--;
+	}
+	if (game_returning_to_lobby_counter == 0)
+	{
+		game_ended = false;
+		game_started = false;
+		for (var i = 0 ; i < array_length(game_end_list); i++)
+		{
+			array_push(players, game_end_list[i]);
+			players[i].ready = false;
+		}
+		game_end_list = [];
+	}
+}
+ts_return_to_lobby = time_source_create(time_source_game, 1, time_source_units_seconds, fn, [], game_returning_to_lobby_time);
+
+var fn = function()
+{
+	array_insert(game_end_list, 0, players[0]);
+	array_delete(players, 0, 1);
+	with(oCamera)
+	{
+		instance_destroy();
+	}
+	game_ending = false;
+	game_ended = true;
+	game_returning_to_lobby_counter = game_returning_to_lobby_time;
+	time_source_start(ts_return_to_lobby);
+}
+ts_game_ending = time_source_create(time_source_game, game_ending_time, time_source_units_seconds, fn);
+
+var fn = function()
+{
 	if (game_starting_counter > 0) 
 	{
 		game_starting_counter--;
@@ -81,10 +123,20 @@ var fn = function()
 	{
 		game_starting = false;
 		game_started = true;
+		game_ended = false;
+		game_ending = false;
+		player_turn = 0;
+		player_turn_next = 1;
+		game_waiting_to_roll = true;
+		consecutive_doubles = 0;
+		rolling_dice = false;
+		property_purchased = true;
+		positions_remaining = 0;
+		game_end_list = [];
 		instance_create_layer(0, 0, "Instances", oCamera);
 	}
 }
-ts_game_starting = time_source_create(time_source_game, game_starting_time, time_source_units_seconds, fn, [], game_starting_time);
+ts_game_starting = time_source_create(time_source_game, 1, time_source_units_seconds, fn, [], game_starting_time);
 
 var fn = function()
 {
@@ -133,11 +185,14 @@ var fn = function()
 ts_card_display = time_source_create(time_source_game, card_display_time, time_source_units_seconds, fn);
 
 #endregion
+
 ///@function get_game_state
 get_game_state = function()
 {
 	if (game_starting == true) return "lobby_starting";
 	if (game_started == false) return "lobby";
+	if (game_ending == true) return "game_ending";
+	if (game_ended == true) return "game_ended";
 	if (jail_animation == true) return "game_jail_animation";
 	if (trade_target > 0)
 	{
@@ -223,7 +278,7 @@ player = function(id_, name_) constructor
 	self.id = id_; 
 	self.name = name_;
 	self.money = 1500;
-	self.jail_cards = 1;
+	self.jail_cards = 0;
 	self.is_in_jail = false;
 	self.turns_in_jail = 0;
 	self.position = 1;
