@@ -79,8 +79,9 @@ if (game_state_is("game"))
 		case "game_turn_end":
 		if (get_player_index_from_id(client.server_id) == player_turn)
 		{
-			create_end_turn_button(midx - 144, bottomy - 224);
-			create_manage_properties_button(midx + 16, bottomy - 224);
+			create_end_turn_button(midx - 224, bottomy - 224);
+			create_manage_properties_button(midx - 64, bottomy - 224);
+			create_send_trade_button(midx + 96, bottomy - 224);
 		}
 		break;
 		
@@ -103,11 +104,209 @@ if (game_state_is("game"))
 		}
 		break;
 		
+		case "game_trade":
+		if (get_player_index_from_id(client.server_id) == player_turn)
+		{
+			var midx = display_get_gui_width();
+			var midy = display_get_gui_height();
+			
+			create_trade_add_100g_button(5 * midx / 8, midy / 8 + 16);
+			create_trade_add_10g_button(5 * midx / 8, midy / 8 + 56);
+			create_trade_add_cardg_button(5 * midx / 8, midy / 8 + 96);
+	
+			create_trade_remove_100g_button(5 * midx / 8, midy / 8 + 136);
+			create_trade_remove_10g_button(5 * midx / 8, midy / 8 + 176);
+			create_trade_remove_cardg_button(5 * midx / 8, midy / 8 + 216);
+			
+			create_trade_add_100r_button(5 * midx / 8, midy / 2 + 16);
+			create_trade_add_10r_button(5 * midx / 8, midy / 2 + 56);
+			create_trade_add_cardr_button(5 * midx / 8, midy / 2 + 96);
+	
+			create_trade_remove_100r_button(5 * midx / 8, midy / 2 + 136);
+			create_trade_remove_10r_button(5 * midx / 8, midy / 2 + 176);
+			create_trade_remove_cardr_button(5 * midx / 8, midy / 2 + 216);
+			
+			var midx = display_get_gui_width() / 2;
+			
+			create_confirm_trade_button(midx - 144, bottomy - 224);
+			create_cancel_trade_button(midx + 16, bottomy - 224);
+		}
+		break;
+		
+		case "game_trade_sent":
+		if (get_player_index_from_id(client.server_id) == trade_target)
+		{
+			create_accept_trade_button(midx - 144, bottomy - 224);
+			create_deny_trade_button(midx + 16, bottomy - 224);
+		}
+		break;
+		
 		default:
 		break;
 	}
+	with (oButtonTextExtra)
+	{
+		event_perform(ev_step, ev_step_normal);
+	}
 }
 
+#endregion
+
+#region Trade Buttons
+
+with (oButtonPropertyTrade)
+{
+	instance_destroy();
+}
+
+if (game_state_is("game_trade"))
+{
+	var midx = display_get_gui_width();
+	var midy = display_get_gui_height();
+	var tlx = midx / 8 + 16;
+	var tly = midy / 8 + 16;
+	
+	var dist = 40;
+	
+	// Given Properties
+	var inst = create_brown1g_button(tlx, tly + dist * 3);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_brown2g_button(tlx, tly + dist * 2);
+	inst.targeted_player = players[player_turn].id;
+	
+	inst = create_lightblue1g_button(tlx + dist * 1, tly + dist * 3);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_lightblue2g_button(tlx + dist * 1, tly + dist * 2);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_lightblue3g_button(tlx + dist * 1, tly + dist * 1);
+	inst.targeted_player = players[player_turn].id;
+	
+	inst = create_pink1g_button(tlx + dist * 2, tly + dist * 3);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_pink2g_button(tlx + dist * 2, tly + dist * 2);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_pink3g_button(tlx + dist * 2, tly + dist * 1);
+	inst.targeted_player = players[player_turn].id;
+	
+	inst = create_orange1g_button(tlx + dist * 3, tly + dist * 3);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_orange2g_button(tlx + dist * 3, tly + dist * 2);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_orange3g_button(tlx + dist * 3, tly + dist * 1);
+	inst.targeted_player = players[player_turn].id;
+	
+	inst = create_red1g_button(tlx + dist * 4, tly + dist * 3);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_red2g_button(tlx + dist * 4, tly + dist * 2);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_red3g_button(tlx + dist * 4, tly + dist * 1);
+	inst.targeted_player = players[player_turn].id;
+	
+	inst = create_yellow1g_button(tlx + dist * 5, tly + dist * 3);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_yellow2g_button(tlx + dist * 5, tly + dist * 2);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_yellow3g_button(tlx + dist * 5, tly + dist * 1);
+	inst.targeted_player = players[player_turn].id;
+	
+	inst = create_green1g_button(tlx + dist * 6, tly + dist * 3);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_green2g_button(tlx + dist * 6, tly + dist * 2);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_green3g_button(tlx + dist * 6, tly + dist * 1);
+	inst.targeted_player = players[player_turn].id;
+	
+	inst = create_darkblue1g_button(tlx + dist * 7, tly + dist * 3);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_darkblue2g_button(tlx + dist * 7, tly + dist * 2);
+	inst.targeted_player = players[player_turn].id;
+	
+	inst = create_railroad1g_button(tlx + dist * 9, tly + dist * 3);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_railroad2g_button(tlx + dist * 9, tly + dist * 2);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_railroad3g_button(tlx + dist * 9, tly + dist * 1);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_railroad4g_button(tlx + dist * 9, tly);
+	inst.targeted_player = players[player_turn].id;
+	
+	inst = create_company1g_button(tlx + dist * 10, tly + dist * 3);
+	inst.targeted_player = players[player_turn].id;
+	inst = create_company2g_button(tlx + dist * 10, tly + dist * 2);
+	inst.targeted_player = players[player_turn].id;
+	
+	//Recieved Properties
+	tly = midy / 2 + 16;
+	inst = create_brown1r_button(tlx, tly + dist * 3);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_brown2r_button(tlx, tly + dist * 2);
+	inst.targeted_player = players[trade_target].id;
+	
+	inst = create_lightblue1r_button(tlx + dist * 1, tly + dist * 3);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_lightblue2r_button(tlx + dist * 1, tly + dist * 2);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_lightblue3r_button(tlx + dist * 1, tly + dist * 1);
+	inst.targeted_player = players[trade_target].id;
+	
+	inst = create_pink1r_button(tlx + dist * 2, tly + dist * 3);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_pink2r_button(tlx + dist * 2, tly + dist * 2);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_pink3r_button(tlx + dist * 2, tly + dist * 1);
+	inst.targeted_player = players[trade_target].id;
+	
+	inst = create_orange1r_button(tlx + dist * 3, tly + dist * 3);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_orange2r_button(tlx + dist * 3, tly + dist * 2);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_orange3r_button(tlx + dist * 3, tly + dist * 1);
+	inst.targeted_player = players[trade_target].id;
+	
+	inst = create_red1r_button(tlx + dist * 4, tly + dist * 3);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_red2r_button(tlx + dist * 4, tly + dist * 2);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_red3r_button(tlx + dist * 4, tly + dist * 1);
+	inst.targeted_player = players[trade_target].id;
+	
+	inst = create_yellow1r_button(tlx + dist * 5, tly + dist * 3);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_yellow2r_button(tlx + dist * 5, tly + dist * 2);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_yellow3r_button(tlx + dist * 5, tly + dist * 1);
+	inst.targeted_player = players[trade_target].id;
+	
+	inst = create_green1r_button(tlx + dist * 6, tly + dist * 3);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_green2r_button(tlx + dist * 6, tly + dist * 2);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_green3r_button(tlx + dist * 6, tly + dist * 1);
+	inst.targeted_player = players[trade_target].id;
+	
+	inst = create_darkblue1r_button(tlx + dist * 7, tly + dist * 3);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_darkblue2r_button(tlx + dist * 7, tly + dist * 2);
+	inst.targeted_player = players[trade_target].id;
+	
+	inst = create_railroad1r_button(tlx + dist * 9, tly + dist * 3);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_railroad2r_button(tlx + dist * 9, tly + dist * 2);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_railroad3r_button(tlx + dist * 9, tly + dist * 1);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_railroad4r_button(tlx + dist * 9, tly);
+	inst.targeted_player = players[trade_target].id;
+	
+	inst = create_company1r_button(tlx + dist * 10, tly + dist * 3);
+	inst.targeted_player = players[trade_target].id;
+	inst = create_company2r_button(tlx + dist * 10, tly + dist * 2);
+	inst.targeted_player = players[trade_target].id;
+	with(oButtonPropertyTrade)
+	{
+		event_perform(ev_step, ev_step_normal);
+	}	
+}
 #endregion
 
 #region Input Detection
@@ -140,6 +339,30 @@ if (client.server_id >= 0)
 	if (keyboard_check_pressed(vk_right))
 	{
 		packet_send(client.client, packet_create("cl_info_key_press_previous_property", [INT], [client.server_id]));
+	}
+	if (keyboard_check_pressed(ord("1")))
+	{
+		packet_send(client.client, packet_create("cl_info_key_press_trade", [INT, INT], [client.server_id, 1]));
+	}
+	if (keyboard_check_pressed(ord("2")))
+	{
+		packet_send(client.client, packet_create("cl_info_key_press_trade", [INT, INT], [client.server_id, 2]));
+	}
+	if (keyboard_check_pressed(ord("3")))
+	{
+		packet_send(client.client, packet_create("cl_info_key_press_trade", [INT, INT], [client.server_id, 3]));
+	}
+	if (keyboard_check_pressed(ord("4")))
+	{
+		packet_send(client.client, packet_create("cl_info_key_press_trade", [INT, INT], [client.server_id, 4]));
+	}
+	if (keyboard_check_pressed(ord("5")))
+	{
+		packet_send(client.client, packet_create("cl_info_key_press_trade", [INT, INT], [client.server_id, 5]));
+	}
+	if (keyboard_check_pressed(ord("6")))
+	{
+		packet_send(client.client, packet_create("cl_info_key_press_trade", [INT, INT], [client.server_id, 6]));
 	}
 }
 #endregion
@@ -564,6 +787,24 @@ if (array_length(events) > 0)
 				}
 			}
 			break;
+			
+			case "game_trade":
+			if (get_player_index_from_id(new_id) == player_turn && !host_input_delay)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_sent", 
+				[], [], 2));
+			}
+			break;
+			
+			case "game_trade_sent":
+			if (get_player_index_from_id(new_id) == trade_target && !host_input_delay)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_accepted",
+				[], [], 2));
+			}
+			break;
 
 			case "game_jail_paying_fee":
 			if (get_player_index_from_id(new_id) == player_turn && !host_input_delay)
@@ -645,6 +886,24 @@ if (array_length(events) > 0)
 					packet_send(client.client, packet_create("hst_info_new_bid",
 					[INT], [10], 2));
 				}
+			}
+			break;
+			
+			case "game_trade":
+			if (get_player_index_from_id(new_id) == player_turn && !host_input_delay)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_canceled",
+				[], [], 2));
+			}
+			break;
+			
+			case "game_trade_sent":
+			if (get_player_index_from_id(new_id) == trade_target && !host_input_delay)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_canceled",
+				[], [], 2));
 			}
 			break;
 			
@@ -791,6 +1050,179 @@ if (array_length(events) > 0)
 		}
 		break;
 		
+		case "cl_info_key_press_trade":
+		var new_id = buffer_read(event, INT);
+		var new_target = buffer_read(event, INT);
+		new_target -= 1;
+		switch(get_game_state())
+		{
+			case "game_turn_end":
+			if (get_player_index_from_id(new_id) == player_turn && !host_input_delay)
+			{
+				if (new_target < array_length(players) && new_target != player_turn)
+				{
+					host_input_delay = true;
+					packet_send(client.client, packet_create("hst_info_trade_start",
+					[INT], [new_target], 2));
+				}
+			}
+			break;
+			
+			default:
+			break;
+		}
+		break;
+		
+		case "cl_info_switch_propertyg":
+		var new_id = buffer_read(event, INT);
+		var new_property = buffer_read(event, INT);
+		if (get_game_state() == "game_trade" && !host_input_delay)
+		{
+			if (get_player_index_from_id(new_id) == player_turn)
+			{
+				if (board[new_property].owner == players[player_turn].id)
+				{
+					host_input_delay = true;
+					packet_send(client.client, packet_create("hst_info_switch_propertyg",
+					[INT], [new_property], 2));
+				}
+			}
+		}
+		break;
+		
+		case "cl_info_switch_propertyr":
+		var new_id = buffer_read(event, INT);
+		var new_property = buffer_read(event, INT);
+		if (get_game_state() == "game_trade" && !host_input_delay)
+		{
+			if (get_player_index_from_id(new_id) == player_turn)
+			{
+				if (board[new_property].owner == players[trade_target].id)
+				{
+					host_input_delay = true;
+					packet_send(client.client, packet_create("hst_info_switch_propertyr",
+					[INT], [new_property], 2));
+				}
+			}
+		}
+		break;
+		
+		case "cl_info_button_press_add_100":
+		var new_id = buffer_read(event, INT);
+		var new_type = buffer_read(event, STRING);
+		if (get_game_state() == "game_trade" && !host_input_delay)
+		{
+			if (new_type == "g" && players[player_turn].money >= trade_given_money + 100)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_add_100g",
+				[], [], 2));
+			}
+			else if (new_type == "r" && players[trade_target].money >= trade_recieved_money + 100)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_add_100r",
+				[], [], 2));
+			}
+		}
+		break;
+		
+		case "cl_info_button_press_add_10":
+		var new_id = buffer_read(event, INT);
+		var new_type = buffer_read(event, STRING);
+		if (get_game_state() == "game_trade" && !host_input_delay)
+		{
+			if (new_type == "g" && players[player_turn].money >= trade_given_money + 10)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_add_10g",
+				[], [], 2));
+			}
+			else if (new_type == "r" && players[trade_target].money >= trade_recieved_money + 10)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_add_10r",
+				[], [], 2));
+			}
+		}
+		break;
+		
+		case "cl_info_button_press_add_card":
+		var new_id = buffer_read(event, INT);
+		var new_type = buffer_read(event, STRING);
+		if (get_game_state() == "game_trade" && !host_input_delay)
+		{
+			if (new_type == "g" && players[player_turn].jail_cards >= trade_given_cards + 1)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_add_cardg",
+				[], [], 2));
+			} else if (new_type == "r" && players[trade_target].jail_cards >= trade_recieved_cards + 1)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_add_cardr",
+				[], [], 2));
+			}
+		}
+		break;
+		
+		case "cl_info_button_press_remove_100":
+		var new_id = buffer_read(event, INT);
+		var new_type = buffer_read(event, STRING);
+		if (get_game_state() == "game_trade" && !host_input_delay)
+		{
+			if (new_type == "g" && trade_given_money >= 100)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_remove_100g",
+				[], [], 2));
+			} else if (new_type = "r" && trade_recieved_money >= 100)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_remove_100r",
+				[], [], 2));
+			}
+		}
+		break;
+		
+		case "cl_info_button_press_remove_10":
+		var new_id = buffer_read(event, INT);
+		var new_type = buffer_read(event, STRING);
+		if (get_game_state() == "game_trade" && !host_input_delay)
+		{
+			if (new_type == "g" && trade_given_money >= 10)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_remove_10g",
+				[], [], 2));
+			} else if (new_type = "r" && trade_recieved_money >= 10)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_remove_10r",
+				[], [], 2));
+			}
+		}
+		break;
+		
+		case "cl_info_button_press_remove_card":
+		var new_id = buffer_read(event, INT);
+		var new_type = buffer_read(event, STRING);
+		if (get_game_state() == "game_trade" && !host_input_delay)
+		{
+			if (new_type == "g" && trade_given_cards >= 1)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_remove_cardg",
+				[], [], 2));
+			} else if (new_type = "r" && trade_recieved_cards >= 1)
+			{
+				host_input_delay = true;
+				packet_send(client.client, packet_create("hst_info_trade_remove_cardr",
+				[], [], 2));
+			}
+		}
+		break;
+		
 		#endregion
 		
 		#region Lobby
@@ -826,6 +1258,142 @@ if (array_length(events) > 0)
 		#endregion
 		
 		#region Game
+		
+		case "hst_info_trade_canceled":
+		trade_target = -1;
+		host_input_delay = false;
+		break;
+		
+		case "hst_info_trade_sent":
+		host_input_delay = false;
+		trade_sent = true;
+		break;
+		
+		case "hst_info_trade_accepted":
+		host_input_delay = false;
+		players[trade_target].money -= trade_recieved_money;
+		players[trade_target].money += trade_given_money;
+		
+		players[player_turn].money -= trade_given_money;
+		players[player_turn].money += trade_recieved_money;
+		
+		players[trade_target].jail_cards -= trade_recieved_cards;
+		players[trade_target].jail_cards += trade_given_cards;
+		
+		players[player_turn].jail_cards -= trade_given_cards;
+		players[player_turn].jail_cards += trade_recieved_cards;
+		
+		for (var i = 0; i < array_length(trade_given_properties); i++)
+		{
+			board[trade_given_properties[i]].owner = players[trade_target].id;
+		}
+		for (var i = 0; i < array_length(trade_recieved_properties); i++)
+		{
+			board[trade_recieved_properties[i]].owner = players[player_turn].id;
+		}
+		trade_target = -1;
+		update_board_sets();
+		break;
+		
+		case "hst_info_trade_start":
+		host_input_delay = false;
+		trade_target = buffer_read(event, INT);
+		trade_sent = false;
+		trade_given_cards = 0;
+		trade_given_money = 0;
+		trade_given_properties = [];
+		trade_recieved_cards = 0;
+		trade_recieved_money = 0;
+		trade_recieved_properties = [];
+		break;
+		
+		case "hst_info_switch_propertyg":
+		host_input_delay = false;
+		var new_property = buffer_read(event, INT);
+		var idx = array_get_index(trade_given_properties, new_property);
+		if (idx == -1)
+		{
+			array_push(trade_given_properties, new_property);
+		}
+		else
+		{
+			array_delete(trade_given_properties, idx, 1);
+		}
+		break;
+		
+		case "hst_info_switch_propertyr":
+		host_input_delay = false;
+		var new_property = buffer_read(event, INT);
+		var idx = array_get_index(trade_recieved_properties, new_property);
+		if (idx == -1)
+		{
+			array_push(trade_recieved_properties, new_property);
+		}
+		else
+		{
+			array_delete(trade_recieved_properties, idx, 1);
+		}
+		break;
+		
+		case "hst_info_trade_add_cardg":
+		host_input_delay = false;
+		trade_given_cards += 1;
+		break;
+		
+		case "hst_info_trade_add_cardr":
+		host_input_delay = false;
+		trade_recieved_cards += 1;
+		break;
+		
+		case "hst_info_trade_remove_cardg":
+		host_input_delay = false;
+		trade_given_cards -= 1;
+		break;
+		
+		case "hst_info_trade_remove_cardr":
+		host_input_delay = false;
+		trade_recieved_cards -= 1;
+		break;
+		
+		case "hst_info_trade_add_100g":
+		host_input_delay = false;
+		trade_given_money += 100;
+		break;
+		
+		case "hst_info_trade_add_100r":
+		host_input_delay = false;
+		trade_recieved_money += 100;
+		break;
+		
+		case "hst_info_trade_remove_100g":
+		host_input_delay = false;
+		trade_given_money -= 100;
+		break;
+		
+		case "hst_info_trade_remove_100r":
+		host_input_delay = false;
+		trade_recieved_money -= 100;
+		break;
+		
+		case "hst_info_trade_add_10g":
+		host_input_delay = false;
+		trade_given_money += 10;
+		break;
+		
+		case "hst_info_trade_add_10r":
+		host_input_delay = false;
+		trade_recieved_money += 10;
+		break;
+		
+		case "hst_info_trade_remove_10g":
+		host_input_delay = false;
+		trade_given_money -= 10;
+		break;
+		
+		case "hst_info_trade_remove_10r":
+		host_input_delay = false;
+		trade_recieved_money -= 10;
+		break;
 		
 		case "hst_info_auction_start":
 		host_input_delay = false;

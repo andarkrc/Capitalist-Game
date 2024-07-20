@@ -17,6 +17,7 @@
   "ResourceOrderSettings":[
     {"name":"fnLeelawadee12","order":1,"path":"fonts/fnLeelawadee12/fnLeelawadee12.yy",},
     {"name":"fnLeelawadee8","order":2,"path":"fonts/fnLeelawadee8/fnLeelawadee8.yy",},
+    {"name":"oButtonPropertyTrade","order":3,"path":"objects/oButtonPropertyTrade/oButtonPropertyTrade.yy",},
     {"name":"oButtonTextExtra","order":2,"path":"objects/oButtonTextExtra/oButtonTextExtra.yy",},
     {"name":"oCamera","order":3,"path":"objects/oCamera/oCamera.yy",},
     {"name":"oClientHandler","order":5,"path":"objects/oClientHandler/oClientHandler.yy",},
@@ -56,5 +57,6 @@
     {"name":"sPieceTextureDog","order":5,"path":"sprites/sPieceTextureDog/sPieceTextureDog.yy",},
     {"name":"sPieceTextureDuck","order":4,"path":"sprites/sPieceTextureDuck/sPieceTextureDuck.yy",},
     {"name":"sPieceTextureRat","order":2,"path":"sprites/sPieceTextureRat/sPieceTextureRat.yy",},
+    {"name":"sTradeArrow","order":13,"path":"sprites/sTradeArrow/sTradeArrow.yy",},
   ],
 }

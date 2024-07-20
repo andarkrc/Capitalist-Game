@@ -7,7 +7,7 @@ game_starting_time = 1;
 game_starting_counter = 0;
 players_ready = 0;
 player_turn = 0;
-player_turn_next = 0;
+player_turn_next = 1;
 player_move_speed = 300; // Pixels / Seconds
 
 game_waiting_to_roll = true;
@@ -36,6 +36,15 @@ auction_members = [];
 auction_turn = 0;
 auctioned_property = 0;
 auction_value = 0;
+
+trade_target = -1;
+trade_sent = false;
+trade_given_money = 0;
+trade_recieved_money = 0;
+trade_given_properties = [];
+trade_recieved_properties = [];
+trade_given_cards = 0;
+trade_recieved_cards = 0;
 
 host_input_delay = false;
 
@@ -130,6 +139,17 @@ get_game_state = function()
 	if (game_starting == true) return "lobby_starting";
 	if (game_started == false) return "lobby";
 	if (jail_animation == true) return "game_jail_animation";
+	if (trade_target > 0)
+	{
+		if (!trade_sent)
+		{
+			return "game_trade";
+		}
+		else
+		{
+			return "game_trade_sent";
+		}
+	}
 	if (auctioned_property > 0) return "game_auction"; 
 	if (selected_property > 0) return "game_upgrading_properties";
 	if (rolling_dice == true) return "game_rolling_dice";
@@ -149,7 +169,6 @@ get_game_state = function()
 		
 		return "game_waiting_to_roll"; 
 	}
-	
 	if (positions_remaining != 0) return "game_piece_moving";
 	if (card_is_displayed == true) return "game_display_card";
 	if (active_card != -1) return "game_card_in_action";
@@ -450,6 +469,24 @@ is_set = function(board_set_)
 		default:
 		return false;
 	}
+}
+
+///@function can_trade
+///@param {Real} board_index_
+can_trade = function(board_index_)
+{
+	if (board[board_index_].set == "railroad") return true;
+	if (board[board_index_].set == "company")  return true;
+	if (board[board_index_].type != "property") return false;
+	
+	for (var i = 1; i <= 40; i++)
+	{
+		if (board[i].set == board[board_index_].set)
+		{
+			if (board[i].upgrade_state > 1) return false;
+		}
+	}
+	return true;
 }
 
 ///@function can_upgrade_property
