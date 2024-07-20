@@ -1,5 +1,5 @@
 switch(room)
 {
-	case rMainMenu : createMainMenu(); break;
+	case rMainMenu : create_main_menu(); break;
 	default : break;
 }

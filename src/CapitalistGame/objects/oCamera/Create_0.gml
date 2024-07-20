@@ -1,10 +1,12 @@
 x = 0;
 y = 0;
-z = -400;
+z = -250;
 
 x_lookat = 1664;
 y_lookat = 832;
 z_lookat = 0;
+
+pos_angle = 315;
 
 dice_rotationx = 0;
 dice_rotationy = 0;

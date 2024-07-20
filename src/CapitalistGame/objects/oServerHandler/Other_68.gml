@@ -1,80 +1,74 @@
-if(async_load[? "id"] == server)
+if (async_load[? "id"] == server)
 {
-	if(async_load[? "type"] == network_type_connect)
+	if (async_load[? "type"] == network_type_connect)
 	{
-		var client_id = async_load[? "socket"];
-		array_push(clients, client_id);
-		if (array_length(clients) == 1)
+		var cl_id = async_load[? "socket"];
+
+		array_push(clients, cl_id);
+		packet_send(cl_id, packet_create("sv_req_info",
+		[INT], [cl_id]));
+		show_debug_message($"[SERVER] New connection {cl_id}")
+	}
+	if (async_load[? "type"] == network_type_disconnect)
+	{
+		var cl_id = async_load[? "socket"];
+		var cl_idx = array_get_index(clients, cl_id);
+		array_delete(clients, cl_idx, 1);
+		show_debug_message("[SERVER] New disconnection");
+		if (array_length(clients) > 0)
 		{
-			host = client_id;
+			packet_send(clients[0], packet_create("sv_info_new_disconnect",
+			[INT], [cl_id]));
+			show_debug_message("[SERVER] Sent disconnection info to HOST");
 		}
-		sendPacket(client_id, "init_handshake_server", [INTEGER], [client_id]);
 	}
-	if(async_load[? "type"] == network_type_disconnect)
-	{
-		var client_id = async_load[? "socket"];
-		array_delete(clients, array_get_index(clients, client_id), 1);
-		sendPacket(host, "manage_player_disconnect", [INTEGER], [client_id]);
-	}
-}
-else if(async_load[? "type"] == network_type_data)
+} else if (async_load[? "type"] == network_type_data && array_contains(clients, async_load[? "id"]))
 {
-	var packet = async_load[? "buffer"];
-	if(buffer_exists(packet))
+	if buffer_exists(async_load[? "buffer"])
 	{
-		
+		var packet = buffer_duplicate(async_load[? "buffer"]);
 		buffer_seek(packet, buffer_seek_start, 0);
-		var game_name = buffer_read(packet, STRING);
-		var packet_type = buffer_read(packet, STRING);
-		
-		var events = oGameHandler.events;
-		var players = oGameHandler.players;
-		if(game_name == "Capitalist Game")
+		var packet_version = buffer_read(packet, STRING);
+		if (packet_version == global.networking_version)
 		{
-			switch(packet_type)
+			var cl_id = async_load[? "id"];
+			
+			var cl_idx = array_get_index(clients, cl_id);
+			
+			var packet_type = buffer_read(packet, STRING);
+			if (string_starts_with(packet_type, "relay"))
 			{
-				case "init_handshake_client" : 
-				{
-					var name = buffer_read(packet, STRING);
-					sendPacket(host, "new_player_connected", [INTEGER, STRING], [async_load[? "id"], name]);
-				}
+				var tokens = string_split(packet_type, " ");
+				var dst = real(tokens[1]);
+				packet_send(dst, packet_unroute(packet));
+				show_debug_message($"[SERVER] Relayed packet to {dst}")
+			} else switch(packet_type)
+			{
+				case "cl_rsp_info":
+				packet_send(clients[0], packet_create("sv_info_new_connection",
+				[INT], [cl_id]));
+				show_debug_message("[SERVER] Sent new connection info to HOST");
 				break;
 				
-				#region Send Packet to all clients
-				case "init_player":
-				case "player_disconnect":
-				case "input_primary" :
-				case "input_secondary" :
-				case "input_exit" :
-				case "input_left_scroll" :
-				case "input_right_scroll" :
-				case "input_extra" :
-				{
-					relayPacketAll(clients, packet);	
-				}
+				case "cl_req_connection":
+				packet_send(cl_id, packet_create("sv_rsp_connection", [], []));
 				break;
-				case "player_sync" :
-				case "prepare_new_player" :
-				{
-					relayPacketAll(clients, packet, [host]);
-				}
-				break;
-				#endregion
 				
-				#region Send Packet to host
-				case "player_piece_request":
-				case "player_color_request":
-				{
-					relayPacket(host, packet);
-				}
+				case "reroute":
+				packet_sendm(clients, packet_unroute(packet), [cl_id]);
+				show_debug_message($"[SERVER] Rerouted packet except to {cl_id}")
 				break;
-				#endregion
 				
-				default :
+				case "reroute_all":
+				packet_sendm(clients, packet_unroute(packet));
+				show_debug_message($"[SERVER] Rerouted packet to all");
+				break;
+				
+				default:
+				packet_send(clients[0], packet);
+				show_debug_message($"[SERVER] Sent packet '{packet_type}' to HOST (sent by {async_load[? "id"]})")
 				break;
 			}
 		}
-		buffer_seek(packet, buffer_seek_end, 0);
-		buffer_delete(packet);
 	}
 }

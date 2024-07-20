@@ -1,6 +1,9 @@
-///@function getPlayerIndexFromID
+randomize();
+
+///@function get_player_index_from_id
 ///@param {Real} id_
-function getPlayerIndexFromID(id_){
+function get_player_index_from_id(id_)
+{
 	var index = -1;
 	with(oGameHandler)
 	{
@@ -14,22 +17,4 @@ function getPlayerIndexFromID(id_){
 		}
 	}
 	return index;
-}
-
-//ONLY FOR HOST
-
-///@function syncPlayers
-///@param {Id.Socket} socket_
-function syncPlayers(socket_){
-	var players = oGameHandler.players;
-	for (var i = 0; i < array_length(players); i++)
-	{
-		var p = players[i];
-		var r = color_get_red(p.color);
-		var g = color_get_green(p.color);
-		var b = color_get_blue(p.color);
-		sendPacket(socket_, "player_sync",
-		[INTEGER, STRING, INTEGER, INTEGER, BOOL, INTEGER, INTEGER, STRING, INTEGER, INTEGER, INTEGER, BOOL],
-		[p.id, p.name, p.money, p.jail_cards, p.is_in_jail, p.turns_in_jail, p.position, p.piece, r, g, b, p.ready]);
-	}
 }

@@ -5,7 +5,7 @@ vertex_format_add_texcoord();
 vertex_format_add_color();
 global.vertex_format = vertex_format_end();
 
-///@function bufferAddPoint
+///@function buffer_add_point
 ///@param {Id.VertexBuffer} vbuffer_
 ///@param {Real} xx_
 ///@param {Real} yy_
@@ -17,18 +17,18 @@ global.vertex_format = vertex_format_end();
 ///@param {Real} textv_
 ///@param {Constant.Color} vcolor_
 ///@param {Real} valpha_
-function bufferAddPoint(vbuffer_, xx_, yy_, zz_, nx_, ny_, nz_, textu_, textv_, vcolor_, valpha_){
+function buffer_add_point(vbuffer_, xx_, yy_, zz_, nx_, ny_, nz_, textu_, textv_, vcolor_, valpha_){
 	vertex_position_3d(vbuffer_, xx_, yy_, zz_);
 	vertex_normal(vbuffer_, nx_, ny_, nz_);
 	vertex_texcoord(vbuffer_, textu_, textv_);
 	vertex_color(vbuffer_, vcolor_, valpha_);
 }
 
-///@function loadOBJModelFile
+///@function load_obj_model_file
 ///@param {String} filename_
 ///@param {Constant.Color} special_color_
 ///@param {Real} special_alpha_
-function loadOBJModelFile(filename_, special_color_ = c_white, special_alpha_ = 1){
+function load_obj_model_file(filename_, special_color_ = c_white, special_alpha_ = 1){
 	var file = file_text_open_read(filename_);
 	var vertex_x = ds_list_create();
 	var vertex_y = ds_list_create();
@@ -110,7 +110,7 @@ function loadOBJModelFile(filename_, special_color_ = c_white, special_alpha_ = 
 					var nx = ds_list_find_value(vertex_nx, real(data[2])-1);
 					var ny = ds_list_find_value(vertex_ny, real(data[2])-1);
 					var nz = ds_list_find_value(vertex_nz, real(data[2])-1);
-					bufferAddPoint(vbuff, xx, yy, zz, nx, ny, nz, uu, vv, special_color_, special_alpha_);
+					buffer_add_point(vbuff, xx, yy, zz, nx, ny, nz, uu, vv, special_color_, special_alpha_);
 				}
 				break;
 			default : break; 
@@ -133,12 +133,12 @@ function loadOBJModelFile(filename_, special_color_ = c_white, special_alpha_ = 
 }
 
 global.models = ds_map_create();
-ds_map_add(global.models, "Potato", loadOBJModelFile("potato.obj"));
-ds_map_add(global.models, "Rat", loadOBJModelFile("bike.obj"));
-ds_map_add(global.models, "Duck", loadOBJModelFile("bike.obj"));
-ds_map_add(global.models, "Dog", loadOBJModelFile("bike.obj"));
-ds_map_add(global.models, "Cat", loadOBJModelFile("bike.obj"));
-ds_map_add(global.models, "Bike", loadOBJModelFile("bike.obj"));
-ds_map_add(global.models, "Dice", loadOBJModelFile("bike.obj"));
-ds_map_add(global.models, "House", loadOBJModelFile("bike.obj"));
-ds_map_add(global.models, "Hotel", loadOBJModelFile("bike.obj"));
+ds_map_add(global.models, "Potato", load_obj_model_file("potato.obj"));
+ds_map_add(global.models, "Rat", load_obj_model_file("bike.obj"));
+ds_map_add(global.models, "Duck", load_obj_model_file("bike.obj"));
+ds_map_add(global.models, "Dog", load_obj_model_file("bike.obj"));
+ds_map_add(global.models, "Cat", load_obj_model_file("bike.obj"));
+ds_map_add(global.models, "Bike", load_obj_model_file("bike.obj"));
+ds_map_add(global.models, "Dice", load_obj_model_file("bike.obj"));
+ds_map_add(global.models, "House", load_obj_model_file("bike.obj"));
+ds_map_add(global.models, "Hotel", load_obj_model_file("bike.obj"));
