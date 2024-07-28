@@ -43,6 +43,7 @@
     {"name":"sDiceTexture2","order":10,"path":"sprites/sDiceTexture2/sDiceTexture2.yy",},
     {"name":"sDiceTexture3","order":11,"path":"sprites/sDiceTexture3/sDiceTexture3.yy",},
     {"name":"sHelping","order":3,"path":"sprites/sHelping/sHelping.yy",},
+    {"name":"sHelping2","order":14,"path":"sprites/sHelping2/sHelping2.yy",},
     {"name":"sHotelTexture","order":7,"path":"sprites/sHotelTexture/sHotelTexture.yy",},
     {"name":"sHouseTexture","order":8,"path":"sprites/sHouseTexture/sHouseTexture.yy",},
     {"name":"sJailCard","order":9,"path":"sprites/sJailCard/sJailCard.yy",},

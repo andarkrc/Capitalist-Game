@@ -1,7 +1,10 @@
 if (game_state_is("game") && !(get_game_state() == "game_ended"))
 {
 	draw_clear_alpha(c_white, 1);
-	draw_surface(application_surface, 0, -192);
+	draw_setup(c_white);
+	draw_surface(application_surface, 0, -224);
+	draw_setup(c_black);
+	draw_line_width(0, display_get_gui_height() - 224, display_get_gui_width(), display_get_gui_height() - 224, 2);
 }
 
 if (get_game_state() == "game_ended")
@@ -70,37 +73,41 @@ switch(get_game_state())
 
 if (game_state_is("game_trade"))
 {
+	var topleftx = 135;
+	var toplefty = 90;
+	var width = 810;
+	var height = 540;
 	var midx = display_get_gui_width();
 	var midy = display_get_gui_height();
 	draw_setup(c_white, 0.8);
-	draw_rectangle(midx / 8, midy / 8, 7 * midx / 8, 7 * midy / 8, false);
+	draw_rectangle(topleftx, toplefty, topleftx + width, toplefty + height, false);
 	draw_setup(c_black, 1, fnLeelawadee16, fa_left, fa_middle);
-	draw_line_width(midx / 8, midy / 2, 7 * midx / 8 - 1, midy / 2, 2);
-	draw_rectangle(midx / 8, midy / 8, 7 * midx / 8, 7 * midy / 8, true);
+	draw_line_width(topleftx, toplefty + height / 2, topleftx + width - 1, toplefty + height / 2, 2);
+	draw_rectangle(topleftx, toplefty, topleftx + width, toplefty + height, true);
 	
-	draw_text(midx / 8 + 32, midy / 2 - 48, $"Money: {trade_given_money},");
-	draw_text(midx / 8 + 64 + string_width($"Money: {trade_given_money},"), midy / 2 - 48, $"Jail Cards: {trade_given_cards}");
+	draw_text(topleftx + 32, toplefty + height / 2 - 48, $"Money: {trade_given_money},");
+	draw_text(topleftx + 64 + string_width($"Money: {trade_given_money},"), toplefty + height / 2 - 48, $"Jail Cards: {trade_given_cards}");
 
-	draw_text(midx / 8 + 32, 7 * midy / 8 - 48, $"Money: {trade_recieved_money},");
-	draw_text(midx / 8 + 64 + string_width($"Money: {trade_recieved_money},"), 7 * midy / 8 - 48, $"Jail Cards: {trade_recieved_cards}");
+	draw_text(topleftx + 32, toplefty + height - 48, $"Money: {trade_recieved_money},");
+	draw_text(topleftx + 64 + string_width($"Money: {trade_recieved_money},"), toplefty + height - 48, $"Jail Cards: {trade_recieved_cards}");
 
 	if (get_player_index_from_id(client.server_id) == player_turn)
 	{
-		draw_sprite_ext(sTradeArrow, 0, 7 * midx / 8 - 80, midy / 2 - 80, 1, 1, 0, c_red, 1);
+		draw_sprite_ext(sTradeArrow, 0, topleftx + width - 80, toplefty + height / 2 - 80, 1, 1, 0, c_red, 1);
 		
-		draw_sprite_ext(sTradeArrow, 0, 7 * midx / 8 - 16, 7 * midy / 8 - 80, -1, 1, 0, c_green, 1);
+		draw_sprite_ext(sTradeArrow, 0, topleftx + width - 16, toplefty + height - 80, -1, 1, 0, c_green, 1);
 	}
 	else if (get_player_index_from_id(client.server_id) == trade_target)
 	{
-		draw_sprite_ext(sTradeArrow, 0, 7 * midx / 8 - 16, midy / 2 - 80, -1, 1, 0, c_green, 1);
+		draw_sprite_ext(sTradeArrow, 0, topleftx + width - 16, toplefty + height / 2 - 80, -1, 1, 0, c_green, 1);
 		
-		draw_sprite_ext(sTradeArrow, 0, 7 * midx / 8 - 80, 7 * midy / 8 - 80, 1, 1, 0, c_red, 1);
+		draw_sprite_ext(sTradeArrow, 0, topleftx + width - 80, toplefty + height - 80, 1, 1, 0, c_red, 1);
 	}
 	else
 	{
 		draw_setup(c_black, 1, fnLeelawadee16, fa_left, fa_middle);
-		draw_text(midx / 8 + 16, midy / 8 + 24, $"{players[player_turn].name} gives:");
-		draw_text(midx / 8 + 16, midy / 2 + 24, $"{players[player_turn].name} recieves:");
+		draw_text(topleftx + 16, toplefty + 24, $"{players[player_turn].name} gives:");
+		draw_text(topleftx + 16, toplefty + height / 2 + 24, $"{players[player_turn].name} recieves:");
 	}
 }
 

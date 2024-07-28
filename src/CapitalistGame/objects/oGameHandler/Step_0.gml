@@ -32,12 +32,19 @@ if (keyboard_check_pressed(vk_right))
 
 #endregion
 
+if (surface_get_width(application_surface) != window_get_width() ||
+	surface_get_height(application_surface) != window_get_height())
+{
+	surface_resize(application_surface, window_get_width(), window_get_height());
+}
+
 #region Gameplay Buttons
 
 if (game_state_is("game"))
 {
 	var midx = display_get_gui_width() / 2;
 	var bottomy = display_get_gui_height();
+	var offy = 208;
 	with (oButtonTextExtra)
 	{
 		instance_destroy();
@@ -47,60 +54,60 @@ if (game_state_is("game"))
 		case "game_waiting_to_roll":
 		if (get_player_index_from_id(client.server_id) == player_turn)
 		{
-			create_roll_dice_button(midx - 64, bottomy - 224);
+			create_roll_dice_button(midx - 64, bottomy - offy);
 		}
 		break;
 		
 		case "game_jail_waiting_to_roll":
 		if (get_player_index_from_id(client.server_id) == player_turn)
 		{
-			create_roll_dice_button(midx - 224, bottomy - 224);
-			create_pay_fee_secondary_button(midx - 64, bottomy - 224);
-			create_use_card_extra_button(midx + 96, bottomy - 224);
+			create_roll_dice_button(midx - 224, bottomy - offy);
+			create_pay_fee_secondary_button(midx - 64, bottomy - offy);
+			create_use_card_extra_button(midx + 96, bottomy - offy);
 		}
 		break;
 		
 		case "game_jail_paying_fee":
 		if (get_player_index_from_id(client.server_id) == player_turn)
 		{
-			create_pay_fee_primary_button(midx - 144, bottomy - 224);
-			create_use_card_secondary_button(midx + 16, bottomy - 224);
+			create_pay_fee_primary_button(midx - 144, bottomy - offy);
+			create_use_card_secondary_button(midx + 16, bottomy - offy);
 		}
 		break;
 		
 		case "game_purchasing_property":
 		if (get_player_index_from_id(client.server_id) == player_turn)
 		{
-			create_purchase_property_button(midx - 144, bottomy - 224);
-			create_auction_property_button(midx + 16, bottomy - 224);
+			create_purchase_property_button(midx - 144, bottomy - offy);
+			create_auction_property_button(midx + 16, bottomy - offy);
 		}
 		break;
 		
 		case "game_turn_end":
 		if (get_player_index_from_id(client.server_id) == player_turn)
 		{
-			create_end_turn_button(midx - 224, bottomy - 224);
-			create_manage_properties_button(midx - 64, bottomy - 224);
-			create_send_trade_button(midx + 96, bottomy - 224);
+			create_end_turn_button(midx - 224, bottomy - offy);
+			create_manage_properties_button(midx - 64, bottomy - offy);
+			create_send_trade_button(midx + 96, bottomy - offy);
 		}
 		break;
 		
 		case "game_upgrading_properties":
 		if (get_player_index_from_id(client.server_id) == player_turn)
 		{
-			create_upgrade_property_button(midx - 304, bottomy - 224);
-			create_downgrade_property_button(midx - 144, bottomy - 224);
-			create_change_property_button(midx + 16, bottomy - 224);
-			create_finish_managing_button(midx + 176, bottomy - 224);
+			create_upgrade_property_button(midx - 304, bottomy - offy);
+			create_downgrade_property_button(midx - 144, bottomy - offy);
+			create_change_property_button(midx + 16, bottomy - offy);
+			create_finish_managing_button(midx + 176, bottomy - offy);
 		}
 		break;
 		
 		case "game_auction":
 		if (client.server_id == auction_members[auction_turn])
 		{
-			create_bet_100_button(midx - 224, bottomy - 224);
-			create_bet_10_button(midx - 64, bottomy - 224);
-			create_auction_withdraw_button(midx + 96, bottomy - 224);
+			create_bet_100_button(midx - 224, bottomy - offy);
+			create_bet_10_button(midx - 64, bottomy - offy);
+			create_auction_withdraw_button(midx + 96, bottomy - offy);
 		}
 		break;
 		
@@ -110,34 +117,39 @@ if (game_state_is("game"))
 			var midx = display_get_gui_width();
 			var midy = display_get_gui_height();
 			
-			create_trade_add_100g_button(5 * midx / 8, midy / 8 + 16);
-			create_trade_add_10g_button(5 * midx / 8, midy / 8 + 56);
-			create_trade_add_cardg_button(5 * midx / 8, midy / 8 + 96);
-	
-			create_trade_remove_100g_button(5 * midx / 8, midy / 8 + 136);
-			create_trade_remove_10g_button(5 * midx / 8, midy / 8 + 176);
-			create_trade_remove_cardg_button(5 * midx / 8, midy / 8 + 216);
+			var topleftx = 135;
+			var toplefty = 90;
 			
-			create_trade_add_100r_button(5 * midx / 8, midy / 2 + 16);
-			create_trade_add_10r_button(5 * midx / 8, midy / 2 + 56);
-			create_trade_add_cardr_button(5 * midx / 8, midy / 2 + 96);
+			var height = 540;
+			
+			create_trade_add_100g_button(5 * topleftx, toplefty + 16);
+			create_trade_add_10g_button(5 * topleftx, toplefty + 56);
+			create_trade_add_cardg_button(5 * topleftx, toplefty + 96);
 	
-			create_trade_remove_100r_button(5 * midx / 8, midy / 2 + 136);
-			create_trade_remove_10r_button(5 * midx / 8, midy / 2 + 176);
-			create_trade_remove_cardr_button(5 * midx / 8, midy / 2 + 216);
+			create_trade_remove_100g_button(5 * topleftx, toplefty + 136);
+			create_trade_remove_10g_button(5 * topleftx, toplefty + 176);
+			create_trade_remove_cardg_button(5 * topleftx, toplefty + 216);
+			
+			create_trade_add_100r_button(5 * topleftx, toplefty + height / 2 + 16);
+			create_trade_add_10r_button(5 * topleftx, toplefty + height / 2 + 56);
+			create_trade_add_cardr_button(5 * topleftx, toplefty + height / 2 + 96);
+	
+			create_trade_remove_100r_button(5 * topleftx, toplefty + height / 2 + 136);
+			create_trade_remove_10r_button(5 * topleftx, toplefty + height / 2 + 176);
+			create_trade_remove_cardr_button(5 * topleftx, toplefty + height / 2 + 216);
 			
 			var midx = display_get_gui_width() / 2;
 			
-			create_confirm_trade_button(midx - 144, bottomy - 224);
-			create_cancel_trade_button(midx + 16, bottomy - 224);
+			create_confirm_trade_button(midx - 144, bottomy - offy);
+			create_cancel_trade_button(midx + 16, bottomy - offy);
 		}
 		break;
 		
 		case "game_trade_sent":
 		if (get_player_index_from_id(client.server_id) == trade_target)
 		{
-			create_accept_trade_button(midx - 144, bottomy - 224);
-			create_deny_trade_button(midx + 16, bottomy - 224);
+			create_accept_trade_button(midx - 144, bottomy - offy);
+			create_deny_trade_button(midx + 16, bottomy - offy);
 		}
 		break;
 		
@@ -163,8 +175,8 @@ if (game_state_is("game_trade"))
 {
 	var midx = display_get_gui_width();
 	var midy = display_get_gui_height();
-	var tlx = midx / 8 + 16;
-	var tly = midy / 8 + 16;
+	var tlx = 135 + 16;
+	var tly = 90 + 16;
 	
 	var dist = 40;
 	
@@ -236,7 +248,7 @@ if (game_state_is("game_trade"))
 	inst.targeted_player = players[player_turn].id;
 	
 	//Recieved Properties
-	tly = midy / 2 + 16;
+	tly = 90 + 540 / 2  + 16;
 	inst = create_brown1r_button(tlx, tly + dist * 3);
 	inst.targeted_player = players[trade_target].id;
 	inst = create_brown2r_button(tlx, tly + dist * 2);
@@ -729,9 +741,18 @@ if (array_length(events) > 0)
 		
 		case "sv_info_new_connection":
 		var new_id = buffer_read(event, INT);
-		packet_send(client.client, packet_create($"relay {new_id}",
-		[STRING, INT], ["hst_req_info", client.server_id]));
-		show_debug_message("[HOST] New connect. Requesting info.");
+		if (get_game_state() == "lobby")
+		{
+			packet_send(client.client, packet_create($"relay {new_id}",
+			[STRING, INT], ["hst_req_info", client.server_id]));
+			show_debug_message("[HOST] New connect. Requesting info.");
+		}
+		else
+		{
+			packet_send(client.client, packet_create($"relay {new_id}",
+			[STRING], ["hst_info_connection_rejected"]));
+			show_debug_message("[HOST] Game in progress. Rejecting connection.");
+		}
 		break;
 		
 		case "cl_info_rsp_info":
@@ -850,6 +871,7 @@ if (array_length(events) > 0)
 			if (get_player_index_from_id(new_id) == player_turn && !host_input_delay)
 			{
 				host_input_delay = true;
+				sync_game();
 				packet_send(client.client, packet_create("hst_info_turn_end",
 				[], [], 2));
 			}
@@ -1592,6 +1614,10 @@ if (array_length(events) > 0)
 		show_debug_message("[CLIENT] Responded to host's info request");
 		break;
 		
+		case "hst_info_connection_rejected":
+		room_goto(rMainMenu);
+		break;
+		
 		case "hst_info_player_sync":
 		show_debug_message("[CLIENT] Syncing 1 player");
 		var p_id = buffer_read(event, INT);
@@ -1621,6 +1647,69 @@ if (array_length(events) > 0)
 		var color_idx = array_get_index(player_colors, players[p_idx].color);
 		if (piece_idx != -1) array_delete(player_pieces, piece_idx, 1);
 		if (color_idx != -1) array_delete(player_colors, color_idx, 1);
+		break;
+		
+		case "hst_info_game_sync":
+		game_started = buffer_read(event, BOOL);
+		game_starting = buffer_read(event, BOOL);
+		game_ended = buffer_read(event, BOOL);
+		game_ending = buffer_read(event, BOOL);
+		player_turn = buffer_read(event, INT);
+		player_turn_next = buffer_read(event, INT);
+		game_waiting_to_roll = buffer_read(event, BOOL);
+		consecutive_doubles = buffer_read(event, INT);
+		rolling_dice = buffer_read(event, BOOL);
+		card_is_displayed = buffer_read(event, BOOL);
+		active_card = buffer_read(event, INT);
+		jail_animation = buffer_read(event, BOOL);
+		property_purchased = buffer_read(event, BOOL);
+		selected_property = buffer_read(event, INT);
+		auctioned_property = buffer_read(event, INT);
+		trade_target = buffer_read(event, INT);
+		players = [];
+		game_end_list = [];
+		var player_num = buffer_read(event, INT);
+		for (var i = 0; i < player_num; i++)
+		{
+			var new_id = buffer_read(event, INT);
+			var new_name = buffer_read(event, STRING);
+			array_push(players, new player(new_id, new_name));
+			var p = players[i];
+			p[i].money = buffer_read(event, INT);
+			p[i].jail_cards = buffer_read(event, INT);
+			p[i].is_in_jail = buffer_read(event, BOOL);
+			p[i].turns_in_jail = buffer_read(event, INT);
+			p[i].position = buffer_read(event, INT);
+			p[i].target = buffer_read(event, INT);
+			p[i].x = buffer_read(event, INT);
+			p[i].y = buffer_read(event, INT);
+			p[i].piece = buffer_read(event, STRING);
+			var r = buffer_read(event, U8);
+			var g = buffer_read(event, U8);
+			var b = buffer_read(event, U8);
+			p[i].color = make_color_rgb(r, g, b);
+		}
+		var end_list_num = buffer_read(event, INT);
+		for (var i = 0; i < end_list_num; i++)
+		{
+			var new_id = buffer_read(event, INT);
+			var new_name = buffer_read(event, STRING);
+			array_push(game_end_list, new player(new_id, new_name));
+			var p = game_end_list[i];
+			p[i].money = buffer_read(event, INT);
+			p[i].jail_cards = buffer_read(event, INT);
+			p[i].is_in_jail = buffer_read(event, BOOL);
+			p[i].turns_in_jail = buffer_read(event, INT);
+			p[i].position = buffer_read(event, INT);
+			p[i].target = buffer_read(event, INT);
+			p[i].x = buffer_read(event, INT);
+			p[i].y = buffer_read(event, INT);
+			p[i].piece = buffer_read(event, STRING);
+			var r = buffer_read(event, U8);
+			var g = buffer_read(event, U8);
+			var b = buffer_read(event, U8);
+			p[i].color = make_color_rgb(r, g, b);
+		}
 		break;
 		#endregion
 		

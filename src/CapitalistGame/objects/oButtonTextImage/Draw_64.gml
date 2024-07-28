@@ -1,6 +1,7 @@
 var ratio_x = 1080/room_width;
 var ratio_y = 720/room_height;
 
+
 draw_setup(c_white, 0.8);
 draw_rectangle(x*ratio_x, y*ratio_y, (x+width)*ratio_x, (y+height)*ratio_y, false);
 draw_setup(c_ltgray);

@@ -133,6 +133,23 @@ var fn = function()
 		property_purchased = true;
 		positions_remaining = 0;
 		game_end_list = [];
+		for (var i = 0; i < array_length(players); i++)
+		{
+			players[i].money = 1500;
+			players[i].jail_cards = 0;
+			players[i].is_in_jail = false;
+			players[i].turns_in_jail = 0;
+			players[i].position = 1;
+			players[i].target = 1;
+			players[i].x = 0;
+			players[i].y = 0;
+		}
+		for (var i = 1; i <= 40; i++)
+		{
+			board[i].owner = undefined;
+			board[i].upgrade_state = 0;
+			board[i].mortgaged = false;
+		}
 		instance_create_layer(0, 0, "Instances", oCamera);
 	}
 }
@@ -308,11 +325,86 @@ sync_players = function()
 	}
 }
 
+///@function sync_game
+sync_game = function()
+{
+	var packet = buffer_create(1, buffer_grow, 1);
+	buffer_seek(packet, buffer_seek_start, 0);
+	#region Game Info
+	buffer_write(packet, STRING, global.networking_version);
+	buffer_write(packet, STRING, "reroute");
+	buffer_write(packet, STRING, "hst_info_game_sync");
+	buffer_write(packet, BOOL, game_started);
+	buffer_write(packet, BOOL, game_starting);
+	buffer_write(packet, BOOL, game_ended);
+	buffer_write(packet, BOOL, game_ending);
+	buffer_write(packet, INT, player_turn);
+	buffer_write(packet, INT, player_turn_next);
+	buffer_write(packet, BOOL, game_waiting_to_roll);
+	buffer_write(packet, INT, consecutive_doubles);
+	buffer_write(packet, BOOL, rolling_dice);
+	buffer_write(packet, BOOL, card_is_displayed);
+	buffer_write(packet, INT, active_card);
+	buffer_write(packet, BOOL, jail_animation);
+	buffer_write(packet, BOOL, property_purchased);
+	buffer_write(packet, INT, selected_property);
+	buffer_write(packet, INT, auctioned_property);
+	buffer_write(packet, INT, trade_target);
+	#endregion
+	buffer_write(packet, INT, array_length(players));
+	for (var i = 0; i < array_length(players); i++)
+	{
+		var p = players[i];
+		var r = color_get_red(p.color);
+		var g = color_get_green(p.color);
+		var b = color_get_blue(p.color);
+		buffer_write(packet, INT, p.id);
+		buffer_write(packet, STRING, p.name);
+		buffer_write(packet, INT, p.money);
+		buffer_write(packet, INT, p.jail_cards);
+		buffer_write(packet, BOOL, p.is_in_jail);
+		buffer_write(packet, INT, p.turns_in_jail);
+		buffer_write(packet, INT, p.position);
+		buffer_write(packet, INT, p.target);
+		buffer_write(packet, INT, p.x);
+		buffer_write(packet, INT, p.y);
+		buffer_write(packet, STRING, p.piece);
+		buffer_write(packet, U8, r);
+		buffer_write(packet, U8, g);
+		buffer_write(packet, U8, b);
+		buffer_write(packet, BOOL, p.ready);
+	}
+	buffer_write(packet, INT, array_length(game_end_list));
+	for (var i = 0; i < array_length(game_end_list); i++)
+	{
+		var p = game_end_list[i];
+		var r = color_get_red(p.color);
+		var g = color_get_green(p.color);
+		var b = color_get_blue(p.color);
+		buffer_write(packet, INT, p.id);
+		buffer_write(packet, STRING, p.name);
+		buffer_write(packet, INT, p.money);
+		buffer_write(packet, INT, p.jail_cards);
+		buffer_write(packet, BOOL, p.is_in_jail);
+		buffer_write(packet, INT, p.turns_in_jail);
+		buffer_write(packet, INT, p.position);
+		buffer_write(packet, INT, p.target);
+		buffer_write(packet, INT, p.x);
+		buffer_write(packet, INT, p.y);
+		buffer_write(packet, STRING, p.piece);
+		buffer_write(packet, U8, r);
+		buffer_write(packet, U8, g);
+		buffer_write(packet, U8, b);
+		buffer_write(packet, BOOL, p.ready);
+	}
+}
+
 ///@function put_player_in_jail
 put_player_in_jail = function()
 {
 	players[player_turn].position = 11;
 	players[player_turn].is_in_jail = true;
+	players[player_turn].turns_in_jail = 0;
 	game_waiting_to_roll = false;
 }
 

@@ -68,6 +68,7 @@
     {"id":{"name":"sDiceTexture2","path":"sprites/sDiceTexture2/sDiceTexture2.yy",},},
     {"id":{"name":"sDiceTexture3","path":"sprites/sDiceTexture3/sDiceTexture3.yy",},},
     {"id":{"name":"sHelping","path":"sprites/sHelping/sHelping.yy",},},
+    {"id":{"name":"sHelping2","path":"sprites/sHelping2/sHelping2.yy",},},
     {"id":{"name":"sHotelTexture","path":"sprites/sHotelTexture/sHotelTexture.yy",},},
     {"id":{"name":"sHouseTexture","path":"sprites/sHouseTexture/sHouseTexture.yy",},},
     {"id":{"name":"sJailCard","path":"sprites/sJailCard/sJailCard.yy",},},

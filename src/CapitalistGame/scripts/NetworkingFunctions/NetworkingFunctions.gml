@@ -35,7 +35,8 @@ function packet_create(packet_type_, data_type_, data_, reroute_ = 0)
 	if (reroute_ == 1)
 	{
 		buffer_write(packet, STRING, "reroute");
-	} else if (reroute_ == 2)
+	}
+	else if (reroute_ == 2)
 	{
 		buffer_write(packet, STRING, "reroute_all");
 	}
